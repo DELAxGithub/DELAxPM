@@ -1,21 +1,15 @@
+# DELA×PM統合システム - Netlify設定（ルートディレクトリ）
+
 [build]
-  command = "pnpm build"
+  command = "pnpm install && pnpm build:unified"
   publish = "apps/unified/.next"
 
 [build.environment]
-  NPM_FLAGS = "--prefix=/dev/null"
   NODE_VERSION = "18"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-[context.production]
-  command = "pnpm build"
-
-[context.deploy-preview]
-  command = "pnpm build"
-
-[context.branch-deploy]
-  command = "pnpm build"
+# Environment variables should be set in Netlify UI:
+# NEXT_PUBLIC_SUPABASE_URL=https://pfrzcteapmwufnovmmfc.supabase.co
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+# NEXT_PUBLIC_APP_NAME=DELA×PM統合システム
+# NEXT_PUBLIC_ENABLE_PLATTO=true
+# NEXT_PUBLIC_ENABLE_LIBERARY=true

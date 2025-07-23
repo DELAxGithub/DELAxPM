@@ -14,7 +14,9 @@
       "Bash(/Users/hiroshikodera/repos/_active/apps/DELAxPM/scripts/backup-pmplatto.sh:*)",
       "Bash(/Users/hiroshikodera/repos/_active/apps/DELAxPM/scripts/backup-pmliberary.sh:*)",
       "Bash(node:*)",
-      "Bash(pnpm run:*)"
+      "Bash(pnpm run:*)",
+      "Bash(git commit:*)",
+      "Bash(touch:*)"
     ],
     "deny": []
   }
