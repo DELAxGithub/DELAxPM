@@ -1,0 +1,33 @@
+{
+  "project": "pmplatto",
+  "projectName": "PMplatto",
+  "timestamp": "2025-07-23T14-58-39",
+  "supabaseUrl": "https://pgropwfkdcvbccdgscff.supabase.co",
+  "tables": {
+    "programs": {
+      "recordCount": 32,
+      "hasError": false,
+      "errorMessage": null
+    },
+    "calendar_tasks": {
+      "recordCount": 28,
+      "hasError": false,
+      "errorMessage": null
+    },
+    "users": {
+      "recordCount": 0,
+      "hasError": true,
+      "errorMessage": "relation \"public.users\" does not exist"
+    }
+  },
+  "totalRecords": 60,
+  "files": [
+    "pmplatto_programs_2025-07-23T14-58-39.json",
+    "pmplatto_programs_2025-07-23T14-58-39.csv",
+    "pmplatto_calendar_tasks_2025-07-23T14-58-39.json",
+    "pmplatto_calendar_tasks_2025-07-23T14-58-39.csv"
+  ],
+  "errors": [
+    "users: relation \"public.users\" does not exist"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "timestamp": "2025-07-23T15-09-00",
+  "migration_date": "2025-07-23T15:09:03.104Z",
+  "results": [
+    {
+      "step": "database_connection",
+      "success": true
+    },
+    {
+      "step": "backup_data_loading",
+      "success": true,
+      "programs": 32,
+      "calendarTasks": 28
+    },
+    {
+      "step": "schema_extension",
+      "success": false
+    },
+    {
+      "step": "programs_migration",
+      "success": false
+    },
+    {
+      "step": "calendar_tasks_migration",
+      "success": false
+    },
+    {
+      "step": "migration_verification",
+      "success": false
+    }
+  ],
+  "status": "partial",
+  "summary": {
+    "total_steps": 6,
+    "successful_steps": 2,
+    "failed_steps": 4
+  }
+}

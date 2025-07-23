@@ -1,0 +1,11 @@
+{
+  "project": "pmplatto",
+  "backup_type": "sql_dump",
+  "timestamp": "20250723_104456",
+  "created_at": "2025-07-23T10:44:56-04:00",
+  "backup_file": "pmplatto_backup_20250723_104456.sql",
+  "csv_export_script": "pmplatto_csv_export_20250723_104456.sql",
+  "source_directory": "/Users/hiroshikodera/repos/_active/apps/DELAxPM/temp_platto",
+  "backup_method": "supabase_cli",
+  "notes": "PMplatto project backup - may require manual execution for remote data"
+}

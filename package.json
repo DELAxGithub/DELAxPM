@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:unified": "turbo build --filter=@delaxpm/unified",
     "dev": "turbo dev",
+    "dev:unified": "turbo dev --filter=@delaxpm/unified",
     "lint": "turbo lint",
     "clean": "turbo clean",
     "test": "turbo test",
-    "type-check": "turbo type-check"
+    "type-check": "turbo type-check",
+    "deploy:check": "pnpm build:unified && echo 'Build successful - ready for deployment'"
   },
   "devDependencies": {
     "turbo": "^2.3.1"
@@ -17,5 +20,8 @@
     "node": ">=18.0.0",
     "pnpm": ">=8.0.0"
   },
-  "packageManager": "pnpm@8.15.0"
+  "packageManager": "pnpm@8.15.0",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.52.0"
+  }
 }

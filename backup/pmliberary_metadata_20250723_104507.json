@@ -1,0 +1,11 @@
+{
+  "project": "pmliberary",
+  "backup_type": "sql_dump",
+  "timestamp": "20250723_104507",
+  "created_at": "2025-07-23T10:45:08-04:00",
+  "backup_file": "pmliberary_backup_20250723_104507.sql",
+  "csv_export_script": "pmliberary_csv_export_20250723_104507.sql",
+  "source_directory": "/Users/hiroshikodera/repos/_active/apps/DELAxPM/temp_liberary",
+  "backup_method": "supabase_cli",
+  "notes": "PMliberary project backup - may require manual execution for remote data"
+}

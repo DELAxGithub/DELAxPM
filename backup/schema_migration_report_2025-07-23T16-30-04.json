@@ -1,0 +1,101 @@
+{
+  "timestamp": "2025-07-23T16-30-04",
+  "migration_date": "2025-07-23T16:30:09.486Z",
+  "source_data": {
+    "programs": 32,
+    "calendar_tasks": 28
+  },
+  "migration_results": {
+    "programs_attempted": 32,
+    "programs_inserted": 0,
+    "episodes_attempted": 28,
+    "episodes_inserted": 0,
+    "total_inserted": 0,
+    "total_attempted": 60
+  },
+  "verification": {
+    "programs_verified": 0,
+    "episodes_verified": 0
+  },
+  "detailed_results": [
+    {
+      "type": "programs",
+      "batch": 0,
+      "success": false,
+      "error": "Could not find the 'budget' column of 'programs' in the schema cache"
+    },
+    {
+      "type": "programs",
+      "batch": 5,
+      "success": false,
+      "error": "Could not find the 'budget' column of 'programs' in the schema cache"
+    },
+    {
+      "type": "programs",
+      "batch": 10,
+      "success": false,
+      "error": "Could not find the 'budget' column of 'programs' in the schema cache"
+    },
+    {
+      "type": "programs",
+      "batch": 15,
+      "success": false,
+      "error": "Could not find the 'budget' column of 'programs' in the schema cache"
+    },
+    {
+      "type": "programs",
+      "batch": 20,
+      "success": false,
+      "error": "Could not find the 'budget' column of 'programs' in the schema cache"
+    },
+    {
+      "type": "programs",
+      "batch": 25,
+      "success": false,
+      "error": "Could not find the 'budget' column of 'programs' in the schema cache"
+    },
+    {
+      "type": "programs",
+      "batch": 30,
+      "success": false,
+      "error": "Could not find the 'budget' column of 'programs' in the schema cache"
+    },
+    {
+      "type": "episodes",
+      "batch": 0,
+      "success": false,
+      "error": "new row violates row-level security policy for table \"episodes\""
+    },
+    {
+      "type": "episodes",
+      "batch": 5,
+      "success": false,
+      "error": "new row violates row-level security policy for table \"episodes\""
+    },
+    {
+      "type": "episodes",
+      "batch": 10,
+      "success": false,
+      "error": "new row violates row-level security policy for table \"episodes\""
+    },
+    {
+      "type": "episodes",
+      "batch": 15,
+      "success": false,
+      "error": "new row violates row-level security policy for table \"episodes\""
+    },
+    {
+      "type": "episodes",
+      "batch": 20,
+      "success": false,
+      "error": "new row violates row-level security policy for table \"episodes\""
+    },
+    {
+      "type": "episodes",
+      "batch": 25,
+      "success": false,
+      "error": "new row violates row-level security policy for table \"episodes\""
+    }
+  ],
+  "status": "failed"
+}

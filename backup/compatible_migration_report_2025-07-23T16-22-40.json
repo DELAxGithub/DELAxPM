@@ -1,0 +1,60 @@
+{
+  "timestamp": "2025-07-23T16-22-40",
+  "migration_date": "2025-07-23T16:22:44.720Z",
+  "source_data": {
+    "programs": 32,
+    "calendar_tasks": 28
+  },
+  "migration_result": {
+    "programsInserted": 0,
+    "episodesInserted": 0,
+    "totalAttempted": 60,
+    "totalInserted": 0,
+    "results": [
+      {
+        "step": "programs_batch_0",
+        "success": false,
+        "error": "Could not find the 'broadcast_time' column of 'programs' in the schema cache",
+        "attempted": 10
+      },
+      {
+        "step": "programs_batch_10",
+        "success": false,
+        "error": "Could not find the 'broadcast_time' column of 'programs' in the schema cache",
+        "attempted": 10
+      },
+      {
+        "step": "programs_batch_20",
+        "success": false,
+        "error": "Could not find the 'broadcast_time' column of 'programs' in the schema cache",
+        "attempted": 10
+      },
+      {
+        "step": "programs_batch_30",
+        "success": false,
+        "error": "Could not find the 'broadcast_time' column of 'programs' in the schema cache",
+        "attempted": 2
+      },
+      {
+        "step": "episodes_batch_0",
+        "success": false,
+        "error": "Could not find the 'estimated_duration' column of 'episodes' in the schema cache",
+        "attempted": 10
+      },
+      {
+        "step": "episodes_batch_10",
+        "success": false,
+        "error": "Could not find the 'estimated_duration' column of 'episodes' in the schema cache",
+        "attempted": 10
+      },
+      {
+        "step": "episodes_batch_20",
+        "success": false,
+        "error": "Could not find the 'estimated_duration' column of 'episodes' in the schema cache",
+        "attempted": 8
+      }
+    ]
+  },
+  "verification_success": false,
+  "status": "no_data"
+}

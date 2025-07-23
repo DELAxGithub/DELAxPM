@@ -1,0 +1,47 @@
+{
+  "project": "pmliberary",
+  "projectName": "PMliberary",
+  "timestamp": "2025-07-23T14-59-20",
+  "supabaseUrl": "https://pfrzcteapmwufnovmmfc.supabase.co",
+  "tables": {
+    "programs": {
+      "recordCount": 0,
+      "hasError": false,
+      "errorMessage": null
+    },
+    "episodes": {
+      "recordCount": 0,
+      "hasError": false,
+      "errorMessage": null
+    },
+    "episode_statuses": {
+      "recordCount": 0,
+      "hasError": false,
+      "errorMessage": null
+    },
+    "status_history": {
+      "recordCount": 0,
+      "hasError": false,
+      "errorMessage": null
+    },
+    "team_events": {
+      "recordCount": 0,
+      "hasError": true,
+      "errorMessage": "relation \"public.team_events\" does not exist"
+    }
+  },
+  "totalRecords": 0,
+  "files": [
+    "pmliberary_programs_2025-07-23T14-59-20.json",
+    "pmliberary_programs_2025-07-23T14-59-20.csv",
+    "pmliberary_episodes_2025-07-23T14-59-20.json",
+    "pmliberary_episodes_2025-07-23T14-59-20.csv",
+    "pmliberary_episode_statuses_2025-07-23T14-59-20.json",
+    "pmliberary_episode_statuses_2025-07-23T14-59-20.csv",
+    "pmliberary_status_history_2025-07-23T14-59-20.json",
+    "pmliberary_status_history_2025-07-23T14-59-20.csv"
+  ],
+  "errors": [
+    "team_events: relation \"public.team_events\" does not exist"
+  ]
+}
