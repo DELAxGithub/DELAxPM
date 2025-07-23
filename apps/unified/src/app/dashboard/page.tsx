@@ -3,9 +3,12 @@
 import { usePrograms, useEpisodes } from '@delaxpm/core';
 import { supabase } from '../../lib/supabase';
 import { LoadingSpinner, ErrorMessage } from '@delaxpm/core';
+import { useAuth } from '../../contexts/AuthContext';
 import Link from 'next/link';
 
 export default function DashboardPage() {
+  const { user, isGuest, signOut } = useAuth();
+  
   const { programs: plattoPrograms, loading: plattoLoading } = usePrograms(supabase, {
     projectType: 'platto'
   });
@@ -53,6 +56,30 @@ export default function DashboardPage() {
               <h1 className="text-3xl font-bold text-gray-900">
                 統合ダッシュボード
               </h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-600">
+                {isGuest ? (
+                  <>ゲストユーザー <span className="text-orange-500">（制限モード）</span></>
+                ) : (
+                  <>{user?.email}</>
+                )}
+              </span>
+              {isGuest ? (
+                <Link
+                  href="/auth/login"
+                  className="bg-blue-600 text-white px-3 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors"
+                >
+                  ログイン
+                </Link>
+              ) : (
+                <button
+                  onClick={signOut}
+                  className="bg-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm hover:bg-gray-400 transition-colors"
+                >
+                  ログアウト
+                </button>
+              )}
             </div>
           </div>
         </div>

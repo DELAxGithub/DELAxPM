@@ -16,7 +16,8 @@
       "Bash(node:*)",
       "Bash(pnpm run:*)",
       "Bash(git commit:*)",
-      "Bash(touch:*)"
+      "Bash(touch:*)",
+      "Bash(pnpm build:*)"
     ],
     "deny": []
   }

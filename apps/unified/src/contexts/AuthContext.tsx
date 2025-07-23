@@ -7,9 +7,11 @@ import { supabase } from '../lib/supabase';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  isGuest: boolean;
   signIn: (email: string, password: string) => Promise<{error: any}>;
   signUp: (email: string, password: string) => Promise<{error: any}>;
   signOut: () => Promise<void>;
+  signInAsGuest: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,8 +19,17 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isGuest, setIsGuest] = useState(false);
 
   useEffect(() => {
+    // ゲストモードの確認
+    const guestMode = localStorage.getItem('delaxpm_guest_mode');
+    if (guestMode === 'true') {
+      setIsGuest(true);
+      setLoading(false);
+      return;
+    }
+
     // 現在のセッションを取得
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -31,6 +42,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
+      if (session?.user) {
+        // 認証済みユーザーはゲストモードを解除
+        setIsGuest(false);
+        localStorage.removeItem('delaxpm_guest_mode');
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -54,14 +70,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    setIsGuest(false);
+    localStorage.removeItem('delaxpm_guest_mode');
+  };
+
+  const signInAsGuest = () => {
+    setIsGuest(true);
+    localStorage.setItem('delaxpm_guest_mode', 'true');
   };
 
   const value = {
     user,
     loading,
+    isGuest,
     signIn,
     signUp,
     signOut,
+    signInAsGuest,
   };
 
   return (

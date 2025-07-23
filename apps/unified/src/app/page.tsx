@@ -5,7 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { LoadingSpinner } from '@delaxpm/core';
 
 export default function Home() {
-  const { user, loading } = useAuth();
+  const { user, loading, isGuest, signInAsGuest } = useAuth();
+  const guestAccessEnabled = process.env.NEXT_PUBLIC_ENABLE_GUEST_ACCESS === 'true';
 
   if (loading) {
     return (
@@ -15,7 +16,7 @@ export default function Home() {
     );
   }
 
-  if (!user) {
+  if (!user && !isGuest) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
@@ -25,13 +26,30 @@ export default function Home() {
           <p className="text-gray-600 text-center mb-8">
             Supabase認証を使用してログインしてください
           </p>
-          <div className="text-center">
-            <Link
-              href="/auth/login"
-              className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors"
-            >
-              ログイン
-            </Link>
+          <div className="space-y-4">
+            <div className="text-center">
+              <Link
+                href="/auth/login"
+                className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors block w-full"
+              >
+                ログイン
+              </Link>
+            </div>
+            {guestAccessEnabled && (
+              <>
+                <div className="text-center">
+                  <button
+                    onClick={signInAsGuest}
+                    className="bg-gray-500 text-white px-6 py-3 rounded-md hover:bg-gray-600 transition-colors w-full"
+                  >
+                    ゲストとして続行
+                  </button>
+                </div>
+                <div className="text-center text-sm text-gray-500">
+                  <p>ゲストモードでは一部機能が制限されます</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </main>
@@ -49,7 +67,11 @@ export default function Home() {
             プラッと進捗すごろく & リベラリー統合版
           </p>
           <p className="text-sm text-gray-500">
-            ようこそ、{user.email} さん
+            {isGuest ? (
+              <>ゲストユーザーとしてアクセス中 <span className="text-orange-500">（制限モード）</span></>
+            ) : (
+              <>ようこそ、{user?.email} さん</>
+            )}
           </p>
         </div>
 
@@ -122,12 +144,21 @@ export default function Home() {
               >
                 統合ダッシュボード
               </Link>
-              <button
-                onClick={() => window.location.href = '/auth/logout'}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
-              >
-                ログアウト
-              </button>
+              {isGuest ? (
+                <Link
+                  href="/auth/login"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  ログイン
+                </Link>
+              ) : (
+                <button
+                  onClick={() => window.location.href = '/auth/logout'}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                >
+                  ログアウト
+                </button>
+              )}
             </div>
           </div>
         </div>
