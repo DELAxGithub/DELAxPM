@@ -1,19 +1,40 @@
 export interface Episode {
   id: number;
   episode_id: string;
+  program_id: number;
   title: string;
-  episode_type: 'interview' | 'vtr';
+  episode_type: 'interview' | 'vtr' | 'regular';
   season: number;
   episode_number: number;
+  project_type: 'platto' | 'liberary' | 'unified';
+  
+  // 制作情報
   script_url?: string;
   current_status?: string;
   director?: string;
   due_date?: string;
+  
+  // インタビュー用項目
   interview_guest?: string;
   interview_date?: string;
   interview_location?: string;
+  
+  // VTR用項目
   vtr_location?: string;
   vtr_theme?: string;
+  
+  // その他
+  notes?: string;
+  estimated_duration?: string;
+  assigned_users?: string[];
+  
+  // 統合管理情報
+  source_system?: string;
+  migrated_at?: string;
+  legacy_id?: string;
+  
+  // システム管理
+  created_by?: string;
   created_at?: string;
   updated_at?: string;
 }
