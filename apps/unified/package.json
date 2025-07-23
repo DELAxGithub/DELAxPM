@@ -1,0 +1,33 @@
+{
+  "name": "@delaxpm/unified",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@delaxpm/core": "workspace:*",
+    "@supabase/supabase-js": "^2.39.7",
+    "@hello-pangea/dnd": "^16.5.0",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.1",
+    "lucide-react": "^0.344.0",
+    "next": "15.4.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.28",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.18",
+    "eslint": "^8",
+    "eslint-config-next": "15.4.3",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.5.3"
+  }
+}
