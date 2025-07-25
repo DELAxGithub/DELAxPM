@@ -7,6 +7,10 @@
     "build:unified": "turbo build --filter=@delaxpm/unified",
     "dev": "turbo dev",
     "dev:unified": "turbo dev --filter=@delaxpm/unified",
+    "dev:all": "concurrently -n \"unified,platto,liberary\" -c \"green,yellow,blue\" \"pnpm dev:unified\" \"echo 'Platto: 既存システム（必要時に手動起動）'\" \"echo 'Liberary: 既存システム（必要時に手動起動）'\"",
+    "status": "node scripts/check-status.js",
+    "compare": "open http://localhost:3000/admin",
+    "feature:toggle": "node scripts/toggle-feature.js",
     "lint": "turbo lint",
     "clean": "turbo clean",
     "test": "turbo test",
@@ -22,6 +26,8 @@
   },
   "packageManager": "pnpm@8.15.0",
   "dependencies": {
-    "@supabase/supabase-js": "^2.52.0"
+    "@supabase/supabase-js": "^2.52.0",
+    "chalk": "^5.4.1",
+    "concurrently": "^9.2.0"
   }
 }

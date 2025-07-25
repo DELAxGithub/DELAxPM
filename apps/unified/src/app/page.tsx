@@ -152,12 +152,22 @@ export default function Home() {
                   ログイン
                 </Link>
               ) : (
-                <button
-                  onClick={() => window.location.href = '/auth/logout'}
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
-                >
-                  ログアウト
-                </button>
+                <>
+                  <button
+                    onClick={() => window.location.href = '/auth/logout'}
+                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                  >
+                    ログアウト
+                  </button>
+                  {user?.email === 'admin@example.com' && (
+                    <Link
+                      href="/admin"
+                      className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
+                    >
+                      システム管理
+                    </Link>
+                  )}
+                </>
               )}
             </div>
           </div>
