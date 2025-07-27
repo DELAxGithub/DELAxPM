@@ -14,8 +14,24 @@
     "lint": "turbo lint",
     "clean": "turbo clean",
     "test": "turbo test",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
     "type-check": "turbo type-check",
-    "deploy:check": "pnpm build:unified && echo 'Build successful - ready for deployment'"
+    "deploy:check": "pnpm build:unified && echo 'Build successful - ready for deployment'",
+    "db:migrate": "cd supabase && supabase db push",
+    "db:reset": "cd supabase && supabase db reset",
+    "db:seed": "cd supabase && supabase db seed",
+    "db:status": "cd supabase && supabase status",
+    "db:diff": "cd supabase && supabase db diff",
+    "db:start": "cd supabase && supabase start",
+    "db:stop": "cd supabase && supabase stop",
+    "db:setup": "pnpm db:start && pnpm db:migrate && echo '✅ Database setup complete!'",
+    "db:validate": "node scripts/validate-migration.js",
+    "db:migrate:safe": "pnpm db:migrate && pnpm db:validate",
+    "dev:with-db": "concurrently -n \"supabase,dev\" -c \"cyan,green\" \"pnpm db:start\" \"pnpm dev:unified\""
   },
   "devDependencies": {
     "turbo": "^2.3.1"

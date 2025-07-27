@@ -63,9 +63,9 @@ export function useEpisodes(
         query = query.eq('program_id', programId);
       }
 
-      // プロジェクトタイプフィルター
+      // プロジェクトタイプフィルター（programsテーブル経由）
       if (projectType) {
-        query = query.eq('project_type', projectType);
+        query = query.eq('programs.project_type', projectType);
       }
 
       // ステータスフィルター

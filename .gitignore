@@ -111,3 +111,14 @@ supabase/.env*
 
 # Temporary repositories
 temp_*
+
+# Playwright
+playwright-report/
+playwright/.cache/
+test-results/
+
+# Local Claude settings
+.claude/settings.local.json
+
+# Package lock files
+package-lock.json

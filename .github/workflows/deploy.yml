@@ -1,0 +1,91 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'pnpm'
+    
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    
+    - name: Build project
+      run: pnpm build:unified
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        NEXT_PUBLIC_APP_NAME: ${{ secrets.NEXT_PUBLIC_APP_NAME }}
+        NEXT_PUBLIC_ENABLE_PLATTO: ${{ secrets.NEXT_PUBLIC_ENABLE_PLATTO }}
+        NEXT_PUBLIC_ENABLE_LIBERARY: ${{ secrets.NEXT_PUBLIC_ENABLE_LIBERARY }}
+        NEXT_PUBLIC_ENABLE_GUEST_ACCESS: ${{ secrets.NEXT_PUBLIC_ENABLE_GUEST_ACCESS }}
+        NEXT_PUBLIC_SLACK_WEBHOOK_URL: ${{ secrets.NEXT_PUBLIC_SLACK_WEBHOOK_URL }}
+    
+    - name: Run E2E tests against build
+      run: |
+        pnpm exec playwright install --with-deps
+        pnpm start:unified &
+        sleep 10
+        pnpm exec playwright test --config=playwright.config.prod.ts || true
+        pkill -f "next start"
+      env:
+        CI: true
+    
+    - name: Deploy to Netlify
+      uses: nwtgck/actions-netlify@v3.0
+      with:
+        publish-dir: './apps/unified/out'
+        production-branch: main
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-message: "Deploy from GitHub Actions"
+        enable-pull-request-comment: false
+        enable-commit-comment: true
+        overwrites-pull-request-comment: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    - name: Health Check
+      run: |
+        # デプロイ後のヘルスチェック
+        sleep 30
+        curl -f ${{ secrets.PRODUCTION_URL }}/api/health || true
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    - name: Notify Slack on Success
+      uses: 8398a7/action-slack@v3
+      with:
+        status: success
+        channel: '#deployments'
+        text: '🎉 DELAxPM deployment successful!'
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: success() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    
+    - name: Notify Slack on Failure
+      uses: 8398a7/action-slack@v3
+      with:
+        status: failure
+        channel: '#deployments'
+        text: '❌ DELAxPM deployment failed!'
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')

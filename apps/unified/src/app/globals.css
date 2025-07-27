@@ -7,13 +7,6 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
@@ -24,4 +17,28 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* アイコンサイズ制御 */
+svg {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+/* アイコンコンテナの厳格なサイズ制御 */
+.icon-container {
+  width: 4rem !important; /* 64px */
+  height: 4rem !important; /* 64px */
+  max-width: 4rem !important;
+  max-height: 4rem !important;
+  flex-shrink: 0 !important;
+}
+
+.icon-container svg {
+  width: 2rem !important; /* 32px */
+  height: 2rem !important; /* 32px */
+  max-width: 2rem !important;
+  max-height: 2rem !important;
 }

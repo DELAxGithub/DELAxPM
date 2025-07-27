@@ -1,0 +1,189 @@
+name: Database Migration
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'supabase/migrations/**'
+      - '.github/workflows/migrate.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+
+jobs:
+  validate-migration:
+    runs-on: ubuntu-latest
+    name: Validate Migration
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+          
+      - name: Start local Supabase
+        run: |
+          cd supabase
+          supabase start
+          
+      - name: Run migration validation
+        run: |
+          cd supabase
+          supabase db push
+          
+      - name: Validate migration results
+        run: |
+          cd supabase
+          # プログラム数の確認
+          PLATTO_COUNT=$(supabase db execute "SELECT COUNT(*) FROM programs WHERE project_type = 'platto'" --json | jq '.[0].count')
+          LIBERARY_COUNT=$(supabase db execute "SELECT COUNT(*) FROM programs WHERE project_type = 'liberary'" --json | jq '.[0].count')
+          
+          echo "Migration validation results:"
+          echo "Platto programs: $PLATTO_COUNT"
+          echo "Liberary programs: $LIBERARY_COUNT" 
+          
+          # 期待値チェック
+          if [ "$PLATTO_COUNT" -ne "5" ]; then
+            echo "❌ Migration failed: Expected 5 platto programs, got $PLATTO_COUNT"
+            exit 1
+          fi
+          
+          if [ "$LIBERARY_COUNT" -ne "3" ]; then
+            echo "❌ Migration failed: Expected 3 liberary programs, got $LIBERARY_COUNT"
+            exit 1
+          fi
+          
+          echo "✅ Migration validation passed!"
+          
+      - name: Stop local Supabase
+        if: always()
+        run: |
+          cd supabase
+          supabase stop
+
+  migrate-staging:
+    needs: validate-migration
+    runs-on: ubuntu-latest
+    name: Deploy to Staging
+    environment: staging
+    if: github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+          
+      - name: Link to Supabase project
+        run: |
+          cd supabase
+          supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          
+      - name: Run database migration
+        run: |
+          cd supabase
+          supabase db push --password ${{ secrets.SUPABASE_DB_PASSWORD }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          
+      - name: Validate production migration
+        run: |
+          cd supabase
+          # データ確認
+          echo "Checking migration results in staging environment..."
+          supabase db execute "SELECT project_type, COUNT(*) as count FROM programs GROUP BY project_type ORDER BY project_type"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          
+      - name: Notify Slack on Success
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          channel: '#deployments'
+          text: '🎉 Database migration to staging completed successfully!'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: success()
+        
+      - name: Notify Slack on Failure
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          channel: '#deployments'
+          text: '❌ Database migration to staging failed!'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
+
+  migrate-production:
+    needs: [validate-migration, migrate-staging]
+    runs-on: ubuntu-latest
+    name: Deploy to Production
+    environment: production
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+          
+      - name: Manual approval required
+        run: |
+          echo "⚠️  Production deployment requires manual approval"
+          echo "This step should only run after careful review"
+          
+      - name: Link to production project
+        run: |
+          cd supabase
+          supabase link --project-ref ${{ secrets.PRODUCTION_SUPABASE_PROJECT_REF }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.PRODUCTION_SUPABASE_ACCESS_TOKEN }}
+          
+      - name: Run production migration
+        run: |
+          cd supabase
+          supabase db push --password ${{ secrets.PRODUCTION_SUPABASE_DB_PASSWORD }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.PRODUCTION_SUPABASE_ACCESS_TOKEN }}
+          
+      - name: Production health check
+        run: |
+          cd supabase
+          echo "Running production health check..."
+          supabase db execute "SELECT 'Production migration completed' as status"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.PRODUCTION_SUPABASE_ACCESS_TOKEN }}
+          
+      - name: Notify Slack on Production Success
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          channel: '#production'
+          text: '🚀 Production database migration completed successfully!'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: success()

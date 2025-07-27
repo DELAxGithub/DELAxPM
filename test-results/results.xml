@@ -1,0 +1,1117 @@
+<testsuites id="" name="" tests="110" failures="20" skipped="0" errors="0" time="53.338803">
+<testsuite name="basic.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="chromium" tests="3" failures="1" skipped="0" time="11.941" errors="0">
+<testcase name="DELAxPM Basic Tests › ホームページが正常に読み込まれる" classname="basic.spec.ts" time="6.686">
+<failure message="basic.spec.ts:4:7 ホームページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [chromium] › basic.spec.ts:4:7 › DELAxPM Basic Tests › ホームページが正常に読み込まれる ──────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |   });
+      13 |
+      14 |   test('ゲストモードでアクセスできる', async ({ page }) => {
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/basic.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-chromium/video.webm]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="DELAxPM Basic Tests › ゲストモードでアクセスできる" classname="basic.spec.ts" time="1.71">
+</testcase>
+<testcase name="DELAxPM Basic Tests › 週報ボタンが表示され動作する" classname="basic.spec.ts" time="3.545">
+</testcase>
+</testsuite>
+<testsuite name="dashboard.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="chromium" tests="7" failures="1" skipped="0" time="12.564" errors="0">
+<testcase name="統合ダッシュボード › ダッシュボードが正常に読み込まれる" classname="dashboard.spec.ts" time="3.542">
+</testcase>
+<testcase name="統合ダッシュボード › 統計カードが表示される" classname="dashboard.spec.ts" time="3.603">
+</testcase>
+<testcase name="統合ダッシュボード › プロジェクトサマリーが表示される" classname="dashboard.spec.ts" time="1.229">
+<failure message="dashboard.spec.ts:36:7 プロジェクトサマリーが表示される" type="FAILURE">
+<![CDATA[  [chromium] › dashboard.spec.ts:36:7 › 統合ダッシュボード › プロジェクトサマリーが表示される ───────────────────────────────
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('text=プラッと進捗すごろく').locator('..') resolved to 2 elements:
+        1) <div class="text-center mb-12">…</div> aka getByText('DELA×PM 進捗管理システムプラッと進捗すごろく & リベラリー統合版ゲストユーザーとしてアクセス中 （制限モード）')
+        2) <div class="text-center">…</div> aka getByRole('link', { name: 'プラッと進捗すごろく 番組制作の9' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=プラッと進捗すごろく').locator('..')
+
+
+      37 |     // プラッと進捗すごろくセクション
+      38 |     const plattoSection = page.locator('text=プラッと進捗すごろく').locator('..');
+    > 39 |     await expect(plattoSection).toBeVisible();
+         |                                 ^
+      40 |     await expect(plattoSection.locator('a[href="/platto"]')).toContainText('詳細を見る');
+      41 |     
+      42 |     // リベラリーセクション
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/dashboard.spec.ts:39:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-chromium/video.webm]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="統合ダッシュボード › クイックアクションが動作する" classname="dashboard.spec.ts" time="1.346">
+</testcase>
+<testcase name="統合ダッシュボード › ゲストユーザー表示が正しい" classname="dashboard.spec.ts" time="0.644">
+</testcase>
+<testcase name="統合ダッシュボード › プログレスバーが表示される（データがある場合）" classname="dashboard.spec.ts" time="0.653">
+</testcase>
+<testcase name="統合ダッシュボード › ナビゲーションが動作する" classname="dashboard.spec.ts" time="1.547">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="chromium" tests="5" failures="2" skipped="0" time="12.793" errors="0">
+<testcase name="ホームページ › ページが正常に読み込まれる" classname="home.spec.ts" time="5.587">
+<failure message="home.spec.ts:4:7 ページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [chromium] › home.spec.ts:4:7 › ホームページ › ページが正常に読み込まれる ───────────────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |     
+      13 |     // サブタイトルの確認
+      14 |     await expect(page.locator('text=プラッと進捗すごろく & リベラリー統合版')).toBeVisible();
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-ページが正常に読み込まれる-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-chromium/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="ホームページ › ゲストモードでアクセスできる" classname="home.spec.ts" time="0.577">
+</testcase>
+<testcase name="ホームページ › プラッととリベラリーのリンクが動作する" classname="home.spec.ts" time="0.432">
+</testcase>
+<testcase name="ホームページ › 統合ダッシュボードにアクセスできる" classname="home.spec.ts" time="0.611">
+</testcase>
+<testcase name="ホームページ › レスポンシブデザインが動作する" classname="home.spec.ts" time="5.586">
+<failure message="home.spec.ts:64:7 レスポンシブデザインが動作する" type="FAILURE">
+<![CDATA[  [chromium] › home.spec.ts:64:7 › ホームページ › レスポンシブデザインが動作する ────────────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('.grid.md\\:grid-cols-2')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('.grid.md\\:grid-cols-2')
+
+
+      69 |     // カードが横並びになっている（グリッド）
+      70 |     const cardContainer = page.locator('.grid.md\\:grid-cols-2');
+    > 71 |     await expect(cardContainer).toBeVisible();
+         |                                 ^
+      72 |     
+      73 |     // モバイルサイズ
+      74 |     await page.setViewportSize({ width: 375, height: 667 });
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:71:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-レスポンシブデザインが動作する-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-chromium/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="weekly-review.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="chromium" tests="7" failures="0" skipped="0" time="9.681" errors="0">
+<testcase name="週報機能 › 週報ボタンが表示される" classname="weekly-review.spec.ts" time="0.471">
+</testcase>
+<testcase name="週報機能 › 週報ボタンをクリックして機能が動作する" classname="weekly-review.spec.ts" time="1.366">
+</testcase>
+<testcase name="週報機能 › 週報APIが正常に応答する" classname="weekly-review.spec.ts" time="1.297">
+</testcase>
+<testcase name="週報機能 › 連続して週報ボタンをクリックできる" classname="weekly-review.spec.ts" time="3.282">
+</testcase>
+<testcase name="週報機能 › エラー時の処理が適切に動作する" classname="weekly-review.spec.ts" time="0.6">
+</testcase>
+<testcase name="週報機能 › モバイル表示でも週報ボタンが正常に動作する" classname="weekly-review.spec.ts" time="1.343">
+</testcase>
+<testcase name="週報機能 › ログインユーザーでも週報ボタンが動作する" classname="weekly-review.spec.ts" time="1.322">
+</testcase>
+</testsuite>
+<testsuite name="basic.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="firefox" tests="3" failures="1" skipped="0" time="12.725" errors="0">
+<testcase name="DELAxPM Basic Tests › ホームページが正常に読み込まれる" classname="basic.spec.ts" time="7.184">
+<failure message="basic.spec.ts:4:7 ホームページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [firefox] › basic.spec.ts:4:7 › DELAxPM Basic Tests › ホームページが正常に読み込まれる ───────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        8 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |   });
+      13 |
+      14 |   test('ゲストモードでアクセスできる', async ({ page }) => {
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/basic.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-firefox/video.webm]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="DELAxPM Basic Tests › ゲストモードでアクセスできる" classname="basic.spec.ts" time="2.231">
+</testcase>
+<testcase name="DELAxPM Basic Tests › 週報ボタンが表示され動作する" classname="basic.spec.ts" time="3.31">
+</testcase>
+</testsuite>
+<testsuite name="dashboard.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="firefox" tests="7" failures="1" skipped="0" time="12.512" errors="0">
+<testcase name="統合ダッシュボード › ダッシュボードが正常に読み込まれる" classname="dashboard.spec.ts" time="3.092">
+</testcase>
+<testcase name="統合ダッシュボード › 統計カードが表示される" classname="dashboard.spec.ts" time="2.804">
+</testcase>
+<testcase name="統合ダッシュボード › プロジェクトサマリーが表示される" classname="dashboard.spec.ts" time="0.889">
+<failure message="dashboard.spec.ts:36:7 プロジェクトサマリーが表示される" type="FAILURE">
+<![CDATA[  [firefox] › dashboard.spec.ts:36:7 › 統合ダッシュボード › プロジェクトサマリーが表示される ────────────────────────────────
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('text=プラッと進捗すごろく').locator('..') resolved to 2 elements:
+        1) <div class="text-center mb-12">…</div> aka getByText('DELA×PM 進捗管理システムプラッと進捗すごろく & リベラリー統合版ゲストユーザーとしてアクセス中 （制限モード）')
+        2) <div class="text-center">…</div> aka getByRole('link', { name: 'プラッと進捗すごろく 番組制作の9' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=プラッと進捗すごろく').locator('..')
+
+
+      37 |     // プラッと進捗すごろくセクション
+      38 |     const plattoSection = page.locator('text=プラッと進捗すごろく').locator('..');
+    > 39 |     await expect(plattoSection).toBeVisible();
+         |                                 ^
+      40 |     await expect(plattoSection.locator('a[href="/platto"]')).toContainText('詳細を見る');
+      41 |     
+      42 |     // リベラリーセクション
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/dashboard.spec.ts:39:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-firefox/video.webm]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="統合ダッシュボード › クイックアクションが動作する" classname="dashboard.spec.ts" time="1.612">
+</testcase>
+<testcase name="統合ダッシュボード › ゲストユーザー表示が正しい" classname="dashboard.spec.ts" time="1.502">
+</testcase>
+<testcase name="統合ダッシュボード › プログレスバーが表示される（データがある場合）" classname="dashboard.spec.ts" time="0.808">
+</testcase>
+<testcase name="統合ダッシュボード › ナビゲーションが動作する" classname="dashboard.spec.ts" time="1.805">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="firefox" tests="5" failures="2" skipped="0" time="13.679" errors="0">
+<testcase name="ホームページ › ページが正常に読み込まれる" classname="home.spec.ts" time="5.705">
+<failure message="home.spec.ts:4:7 ページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [firefox] › home.spec.ts:4:7 › ホームページ › ページが正常に読み込まれる ────────────────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |     
+      13 |     // サブタイトルの確認
+      14 |     await expect(page.locator('text=プラッと進捗すごろく & リベラリー統合版')).toBeVisible();
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-ページが正常に読み込まれる-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-firefox/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="ホームページ › ゲストモードでアクセスできる" classname="home.spec.ts" time="0.833">
+</testcase>
+<testcase name="ホームページ › プラッととリベラリーのリンクが動作する" classname="home.spec.ts" time="0.687">
+</testcase>
+<testcase name="ホームページ › 統合ダッシュボードにアクセスできる" classname="home.spec.ts" time="0.869">
+</testcase>
+<testcase name="ホームページ › レスポンシブデザインが動作する" classname="home.spec.ts" time="5.585">
+<failure message="home.spec.ts:64:7 レスポンシブデザインが動作する" type="FAILURE">
+<![CDATA[  [firefox] › home.spec.ts:64:7 › ホームページ › レスポンシブデザインが動作する ─────────────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('.grid.md\\:grid-cols-2')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('.grid.md\\:grid-cols-2')
+
+
+      69 |     // カードが横並びになっている（グリッド）
+      70 |     const cardContainer = page.locator('.grid.md\\:grid-cols-2');
+    > 71 |     await expect(cardContainer).toBeVisible();
+         |                                 ^
+      72 |     
+      73 |     // モバイルサイズ
+      74 |     await page.setViewportSize({ width: 375, height: 667 });
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:71:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-レスポンシブデザインが動作する-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-firefox/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="weekly-review.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="firefox" tests="7" failures="0" skipped="0" time="11.827" errors="0">
+<testcase name="週報機能 › 週報ボタンが表示される" classname="weekly-review.spec.ts" time="0.606">
+</testcase>
+<testcase name="週報機能 › 週報ボタンをクリックして機能が動作する" classname="weekly-review.spec.ts" time="1.629">
+</testcase>
+<testcase name="週報機能 › 週報APIが正常に応答する" classname="weekly-review.spec.ts" time="1.206">
+</testcase>
+<testcase name="週報機能 › 連続して週報ボタンをクリックできる" classname="weekly-review.spec.ts" time="3.885">
+</testcase>
+<testcase name="週報機能 › エラー時の処理が適切に動作する" classname="weekly-review.spec.ts" time="1.176">
+</testcase>
+<testcase name="週報機能 › モバイル表示でも週報ボタンが正常に動作する" classname="weekly-review.spec.ts" time="1.674">
+</testcase>
+<testcase name="週報機能 › ログインユーザーでも週報ボタンが動作する" classname="weekly-review.spec.ts" time="1.651">
+</testcase>
+</testsuite>
+<testsuite name="basic.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="webkit" tests="3" failures="1" skipped="0" time="11.924" errors="0">
+<testcase name="DELAxPM Basic Tests › ホームページが正常に読み込まれる" classname="basic.spec.ts" time="6.943">
+<failure message="basic.spec.ts:4:7 ホームページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [webkit] › basic.spec.ts:4:7 › DELAxPM Basic Tests › ホームページが正常に読み込まれる ────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |   });
+      13 |
+      14 |   test('ゲストモードでアクセスできる', async ({ page }) => {
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/basic.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-webkit/video.webm]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="DELAxPM Basic Tests › ゲストモードでアクセスできる" classname="basic.spec.ts" time="2.018">
+</testcase>
+<testcase name="DELAxPM Basic Tests › 週報ボタンが表示され動作する" classname="basic.spec.ts" time="2.963">
+</testcase>
+</testsuite>
+<testsuite name="dashboard.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="webkit" tests="7" failures="1" skipped="0" time="11.192" errors="0">
+<testcase name="統合ダッシュボード › ダッシュボードが正常に読み込まれる" classname="dashboard.spec.ts" time="2.918">
+</testcase>
+<testcase name="統合ダッシュボード › 統計カードが表示される" classname="dashboard.spec.ts" time="2.917">
+</testcase>
+<testcase name="統合ダッシュボード › プロジェクトサマリーが表示される" classname="dashboard.spec.ts" time="0.595">
+<failure message="dashboard.spec.ts:36:7 プロジェクトサマリーが表示される" type="FAILURE">
+<![CDATA[  [webkit] › dashboard.spec.ts:36:7 › 統合ダッシュボード › プロジェクトサマリーが表示される ─────────────────────────────────
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('text=プラッと進捗すごろく').locator('..') resolved to 2 elements:
+        1) <div class="text-center mb-12">…</div> aka getByText('DELA×PM 進捗管理システムプラッと進捗すごろく & リベラリー統合版ゲストユーザーとしてアクセス中 （制限モード）')
+        2) <div class="text-center">…</div> aka getByRole('link', { name: 'プラッと進捗すごろく 番組制作の9' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=プラッと進捗すごろく').locator('..')
+
+
+      37 |     // プラッと進捗すごろくセクション
+      38 |     const plattoSection = page.locator('text=プラッと進捗すごろく').locator('..');
+    > 39 |     await expect(plattoSection).toBeVisible();
+         |                                 ^
+      40 |     await expect(plattoSection.locator('a[href="/platto"]')).toContainText('詳細を見る');
+      41 |     
+      42 |     // リベラリーセクション
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/dashboard.spec.ts:39:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-webkit/video.webm]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="統合ダッシュボード › クイックアクションが動作する" classname="dashboard.spec.ts" time="1.273">
+</testcase>
+<testcase name="統合ダッシュボード › ゲストユーザー表示が正しい" classname="dashboard.spec.ts" time="0.869">
+</testcase>
+<testcase name="統合ダッシュボード › プログレスバーが表示される（データがある場合）" classname="dashboard.spec.ts" time="0.857">
+</testcase>
+<testcase name="統合ダッシュボード › ナビゲーションが動作する" classname="dashboard.spec.ts" time="1.763">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="webkit" tests="5" failures="2" skipped="0" time="13.37" errors="0">
+<testcase name="ホームページ › ページが正常に読み込まれる" classname="home.spec.ts" time="5.49">
+<failure message="home.spec.ts:4:7 ページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [webkit] › home.spec.ts:4:7 › ホームページ › ページが正常に読み込まれる ─────────────────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        7 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |     
+      13 |     // サブタイトルの確認
+      14 |     await expect(page.locator('text=プラッと進捗すごろく & リベラリー統合版')).toBeVisible();
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-ページが正常に読み込まれる-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-webkit/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="ホームページ › ゲストモードでアクセスできる" classname="home.spec.ts" time="0.625">
+</testcase>
+<testcase name="ホームページ › プラッととリベラリーのリンクが動作する" classname="home.spec.ts" time="0.719">
+</testcase>
+<testcase name="ホームページ › 統合ダッシュボードにアクセスできる" classname="home.spec.ts" time="0.853">
+</testcase>
+<testcase name="ホームページ › レスポンシブデザインが動作する" classname="home.spec.ts" time="5.683">
+<failure message="home.spec.ts:64:7 レスポンシブデザインが動作する" type="FAILURE">
+<![CDATA[  [webkit] › home.spec.ts:64:7 › ホームページ › レスポンシブデザインが動作する ──────────────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('.grid.md\\:grid-cols-2')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('.grid.md\\:grid-cols-2')
+
+
+      69 |     // カードが横並びになっている（グリッド）
+      70 |     const cardContainer = page.locator('.grid.md\\:grid-cols-2');
+    > 71 |     await expect(cardContainer).toBeVisible();
+         |                                 ^
+      72 |     
+      73 |     // モバイルサイズ
+      74 |     await page.setViewportSize({ width: 375, height: 667 });
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:71:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-レスポンシブデザインが動作する-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-webkit/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="weekly-review.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="webkit" tests="7" failures="0" skipped="0" time="10.043" errors="0">
+<testcase name="週報機能 › 週報ボタンが表示される" classname="weekly-review.spec.ts" time="0.56">
+</testcase>
+<testcase name="週報機能 › 週報ボタンをクリックして機能が動作する" classname="weekly-review.spec.ts" time="1.448">
+</testcase>
+<testcase name="週報機能 › 週報APIが正常に応答する" classname="weekly-review.spec.ts" time="1.016">
+</testcase>
+<testcase name="週報機能 › 連続して週報ボタンをクリックできる" classname="weekly-review.spec.ts" time="3.337">
+</testcase>
+<testcase name="週報機能 › エラー時の処理が適切に動作する" classname="weekly-review.spec.ts" time="0.602">
+</testcase>
+<testcase name="週報機能 › モバイル表示でも週報ボタンが正常に動作する" classname="weekly-review.spec.ts" time="1.541">
+</testcase>
+<testcase name="週報機能 › ログインユーザーでも週報ボタンが動作する" classname="weekly-review.spec.ts" time="1.539">
+</testcase>
+</testsuite>
+<testsuite name="basic.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="Mobile Chrome" tests="3" failures="1" skipped="0" time="7.796" errors="0">
+<testcase name="DELAxPM Basic Tests › ホームページが正常に読み込まれる" classname="basic.spec.ts" time="5.64">
+<failure message="basic.spec.ts:4:7 ホームページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › basic.spec.ts:4:7 › DELAxPM Basic Tests › ホームページが正常に読み込まれる ─────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |   });
+      13 |
+      14 |   test('ゲストモードでアクセスできる', async ({ page }) => {
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/basic.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Chrome/test-failed-1.png]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Chrome/video.webm]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Chrome/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="DELAxPM Basic Tests › ゲストモードでアクセスできる" classname="basic.spec.ts" time="0.674">
+</testcase>
+<testcase name="DELAxPM Basic Tests › 週報ボタンが表示され動作する" classname="basic.spec.ts" time="1.482">
+</testcase>
+</testsuite>
+<testsuite name="dashboard.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="Mobile Chrome" tests="7" failures="1" skipped="0" time="7.655" errors="0">
+<testcase name="統合ダッシュボード › ダッシュボードが正常に読み込まれる" classname="dashboard.spec.ts" time="1.391">
+</testcase>
+<testcase name="統合ダッシュボード › 統計カードが表示される" classname="dashboard.spec.ts" time="1.413">
+</testcase>
+<testcase name="統合ダッシュボード › プロジェクトサマリーが表示される" classname="dashboard.spec.ts" time="0.602">
+<failure message="dashboard.spec.ts:36:7 プロジェクトサマリーが表示される" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › dashboard.spec.ts:36:7 › 統合ダッシュボード › プロジェクトサマリーが表示される ──────────────────────────
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('text=プラッと進捗すごろく').locator('..') resolved to 2 elements:
+        1) <div class="text-center mb-12">…</div> aka getByText('DELA×PM 進捗管理システムプラッと進捗すごろく & リベラリー統合版ゲストユーザーとしてアクセス中 （制限モード）')
+        2) <div class="text-center">…</div> aka getByRole('link', { name: 'プラッと進捗すごろく 番組制作の9' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=プラッと進捗すごろく').locator('..')
+
+
+      37 |     // プラッと進捗すごろくセクション
+      38 |     const plattoSection = page.locator('text=プラッと進捗すごろく').locator('..');
+    > 39 |     await expect(plattoSection).toBeVisible();
+         |                                 ^
+      40 |     await expect(plattoSection.locator('a[href="/platto"]')).toContainText('詳細を見る');
+      41 |     
+      42 |     // リベラリーセクション
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/dashboard.spec.ts:39:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Chrome/test-failed-1.png]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Chrome/video.webm]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Chrome/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="統合ダッシュボード › クイックアクションが動作する" classname="dashboard.spec.ts" time="1.458">
+</testcase>
+<testcase name="統合ダッシュボード › ゲストユーザー表示が正しい" classname="dashboard.spec.ts" time="0.589">
+</testcase>
+<testcase name="統合ダッシュボード › プログレスバーが表示される（データがある場合）" classname="dashboard.spec.ts" time="0.644">
+</testcase>
+<testcase name="統合ダッシュボード › ナビゲーションが動作する" classname="dashboard.spec.ts" time="1.558">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="Mobile Chrome" tests="5" failures="2" skipped="0" time="12.715" errors="0">
+<testcase name="ホームページ › ページが正常に読み込まれる" classname="home.spec.ts" time="5.553">
+<failure message="home.spec.ts:4:7 ページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › home.spec.ts:4:7 › ホームページ › ページが正常に読み込まれる ──────────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |     
+      13 |     // サブタイトルの確認
+      14 |     await expect(page.locator('text=プラッと進捗すごろく & リベラリー統合版')).toBeVisible();
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-ページが正常に読み込まれる-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-Mobile-Chrome/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-Mobile-Chrome/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-Mobile-Chrome/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="ホームページ › ゲストモードでアクセスできる" classname="home.spec.ts" time="0.514">
+</testcase>
+<testcase name="ホームページ › プラッととリベラリーのリンクが動作する" classname="home.spec.ts" time="0.483">
+</testcase>
+<testcase name="ホームページ › 統合ダッシュボードにアクセスできる" classname="home.spec.ts" time="0.646">
+</testcase>
+<testcase name="ホームページ › レスポンシブデザインが動作する" classname="home.spec.ts" time="5.519">
+<failure message="home.spec.ts:64:7 レスポンシブデザインが動作する" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › home.spec.ts:64:7 › ホームページ › レスポンシブデザインが動作する ───────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('.grid.md\\:grid-cols-2')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('.grid.md\\:grid-cols-2')
+
+
+      69 |     // カードが横並びになっている（グリッド）
+      70 |     const cardContainer = page.locator('.grid.md\\:grid-cols-2');
+    > 71 |     await expect(cardContainer).toBeVisible();
+         |                                 ^
+      72 |     
+      73 |     // モバイルサイズ
+      74 |     await page.setViewportSize({ width: 375, height: 667 });
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:71:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-レスポンシブデザインが動作する-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-Mobile-Chrome/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-Mobile-Chrome/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-Mobile-Chrome/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="weekly-review.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="Mobile Chrome" tests="7" failures="0" skipped="0" time="9.463" errors="0">
+<testcase name="週報機能 › 週報ボタンが表示される" classname="weekly-review.spec.ts" time="0.491">
+</testcase>
+<testcase name="週報機能 › 週報ボタンをクリックして機能が動作する" classname="weekly-review.spec.ts" time="1.388">
+</testcase>
+<testcase name="週報機能 › 週報APIが正常に応答する" classname="weekly-review.spec.ts" time="0.981">
+</testcase>
+<testcase name="週報機能 › 連続して週報ボタンをクリックできる" classname="weekly-review.spec.ts" time="3.247">
+</testcase>
+<testcase name="週報機能 › エラー時の処理が適切に動作する" classname="weekly-review.spec.ts" time="0.658">
+</testcase>
+<testcase name="週報機能 › モバイル表示でも週報ボタンが正常に動作する" classname="weekly-review.spec.ts" time="1.368">
+</testcase>
+<testcase name="週報機能 › ログインユーザーでも週報ボタンが動作する" classname="weekly-review.spec.ts" time="1.33">
+</testcase>
+</testsuite>
+<testsuite name="basic.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="Mobile Safari" tests="3" failures="1" skipped="0" time="7.954" errors="0">
+<testcase name="DELAxPM Basic Tests › ホームページが正常に読み込まれる" classname="basic.spec.ts" time="5.507">
+<failure message="basic.spec.ts:4:7 ホームページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [Mobile Safari] › basic.spec.ts:4:7 › DELAxPM Basic Tests › ホームページが正常に読み込まれる ─────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        7 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |   });
+      13 |
+      14 |   test('ゲストモードでアクセスできる', async ({ page }) => {
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/basic.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Safari/test-failed-1.png]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Safari/video.webm]]
+
+[[ATTACHMENT|basic-DELAxPM-Basic-Tests-ホームページが正常に読み込まれる-Mobile-Safari/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="DELAxPM Basic Tests › ゲストモードでアクセスできる" classname="basic.spec.ts" time="0.829">
+</testcase>
+<testcase name="DELAxPM Basic Tests › 週報ボタンが表示され動作する" classname="basic.spec.ts" time="1.618">
+</testcase>
+</testsuite>
+<testsuite name="dashboard.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="Mobile Safari" tests="7" failures="1" skipped="0" time="7.058" errors="0">
+<testcase name="統合ダッシュボード › ダッシュボードが正常に読み込まれる" classname="dashboard.spec.ts" time="1.088">
+</testcase>
+<testcase name="統合ダッシュボード › 統計カードが表示される" classname="dashboard.spec.ts" time="0.952">
+</testcase>
+<testcase name="統合ダッシュボード › プロジェクトサマリーが表示される" classname="dashboard.spec.ts" time="0.871">
+<failure message="dashboard.spec.ts:36:7 プロジェクトサマリーが表示される" type="FAILURE">
+<![CDATA[  [Mobile Safari] › dashboard.spec.ts:36:7 › 統合ダッシュボード › プロジェクトサマリーが表示される ──────────────────────────
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('text=プラッと進捗すごろく').locator('..') resolved to 2 elements:
+        1) <div class="text-center mb-12">…</div> aka getByText('DELA×PM 進捗管理システムプラッと進捗すごろく & リベラリー統合版ゲストユーザーとしてアクセス中 （制限モード）')
+        2) <div class="text-center">…</div> aka getByRole('link', { name: 'プラッと進捗すごろく 番組制作の9' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=プラッと進捗すごろく').locator('..')
+
+
+      37 |     // プラッと進捗すごろくセクション
+      38 |     const plattoSection = page.locator('text=プラッと進捗すごろく').locator('..');
+    > 39 |     await expect(plattoSection).toBeVisible();
+         |                                 ^
+      40 |     await expect(plattoSection.locator('a[href="/platto"]')).toContainText('詳細を見る');
+      41 |     
+      42 |     // リベラリーセクション
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/dashboard.spec.ts:39:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Safari/test-failed-1.png]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Safari/video.webm]]
+
+[[ATTACHMENT|dashboard-統合ダッシュボード-プロジェクトサマリーが表示される-Mobile-Safari/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="統合ダッシュボード › クイックアクションが動作する" classname="dashboard.spec.ts" time="1.045">
+</testcase>
+<testcase name="統合ダッシュボード › ゲストユーザー表示が正しい" classname="dashboard.spec.ts" time="0.675">
+</testcase>
+<testcase name="統合ダッシュボード › プログレスバーが表示される（データがある場合）" classname="dashboard.spec.ts" time="0.709">
+</testcase>
+<testcase name="統合ダッシュボード › ナビゲーションが動作する" classname="dashboard.spec.ts" time="1.718">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="Mobile Safari" tests="5" failures="2" skipped="0" time="12.819" errors="0">
+<testcase name="ホームページ › ページが正常に読み込まれる" classname="home.spec.ts" time="5.451">
+<failure message="home.spec.ts:4:7 ページが正常に読み込まれる" type="FAILURE">
+<![CDATA[  [Mobile Safari] › home.spec.ts:4:7 › ホームページ › ページが正常に読み込まれる ──────────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected string: "DELA×PM 進捗管理システム"
+    Received string: "DELA×PM ログイン"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        7 × locator resolved to <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">DELA×PM ログイン</h1>
+          - unexpected value "DELA×PM ログイン"
+
+
+       9 |     
+      10 |     // メインヘッダーの確認
+    > 11 |     await expect(page.locator('h1')).toContainText('DELA×PM 進捗管理システム');
+         |                                      ^
+      12 |     
+      13 |     // サブタイトルの確認
+      14 |     await expect(page.locator('text=プラッと進捗すごろく & リベラリー統合版')).toBeVisible();
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:11:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-ページが正常に読み込まれる-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-ページが正常に読み込まれる-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-Mobile-Safari/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-Mobile-Safari/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-ページが正常に読み込まれる-Mobile-Safari/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="ホームページ › ゲストモードでアクセスできる" classname="home.spec.ts" time="0.656">
+</testcase>
+<testcase name="ホームページ › プラッととリベラリーのリンクが動作する" classname="home.spec.ts" time="0.603">
+</testcase>
+<testcase name="ホームページ › 統合ダッシュボードにアクセスできる" classname="home.spec.ts" time="0.651">
+</testcase>
+<testcase name="ホームページ › レスポンシブデザインが動作する" classname="home.spec.ts" time="5.458">
+<failure message="home.spec.ts:64:7 レスポンシブデザインが動作する" type="FAILURE">
+<![CDATA[  [Mobile Safari] › home.spec.ts:64:7 › ホームページ › レスポンシブデザインが動作する ───────────────────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('.grid.md\\:grid-cols-2')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('.grid.md\\:grid-cols-2')
+
+
+      69 |     // カードが横並びになっている（グリッド）
+      70 |     const cardContainer = page.locator('.grid.md\\:grid-cols-2');
+    > 71 |     await expect(cardContainer).toBeVisible();
+         |                                 ^
+      72 |     
+      73 |     // モバイルサイズ
+      74 |     await page.setViewportSize({ width: 375, height: 667 });
+        at /Users/hiroshikodera/repos/_active/apps/DELAxPM/e2e/home.spec.ts:71:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/home-ホームページ-レスポンシブデザインが動作する-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/home-ホームページ-レスポンシブデザインが動作する-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-Mobile-Safari/test-failed-1.png]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-Mobile-Safari/video.webm]]
+
+[[ATTACHMENT|home-ホームページ-レスポンシブデザインが動作する-Mobile-Safari/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="weekly-review.spec.ts" timestamp="2025-07-27T13:47:03.002Z" hostname="Mobile Safari" tests="7" failures="0" skipped="0" time="9.692" errors="0">
+<testcase name="週報機能 › 週報ボタンが表示される" classname="weekly-review.spec.ts" time="0.482">
+</testcase>
+<testcase name="週報機能 › 週報ボタンをクリックして機能が動作する" classname="weekly-review.spec.ts" time="1.536">
+</testcase>
+<testcase name="週報機能 › 週報APIが正常に応答する" classname="weekly-review.spec.ts" time="1.022">
+</testcase>
+<testcase name="週報機能 › 連続して週報ボタンをクリックできる" classname="weekly-review.spec.ts" time="3.352">
+</testcase>
+<testcase name="週報機能 › エラー時の処理が適切に動作する" classname="weekly-review.spec.ts" time="0.516">
+</testcase>
+<testcase name="週報機能 › モバイル表示でも週報ボタンが正常に動作する" classname="weekly-review.spec.ts" time="1.381">
+</testcase>
+<testcase name="週報機能 › ログインユーザーでも週報ボタンが動作する" classname="weekly-review.spec.ts" time="1.403">
+</testcase>
+</testsuite>
+</testsuites>

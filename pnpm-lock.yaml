@@ -50,7 +50,7 @@ importers:
         version: 0.344.0(react@18.3.1)
       next:
         specifier: 15.4.3
-        version: 15.4.3(react-dom@18.3.1)(react@18.3.1)
+        version: 15.4.3(@playwright/test@1.54.1)(react-dom@18.3.1)(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -61,6 +61,9 @@ importers:
         specifier: ^6.22.3
         version: 6.30.1(react-dom@18.3.1)(react@18.3.1)
     devDependencies:
+      '@playwright/test':
+        specifier: ^1.54.1
+        version: 1.54.1
       '@types/node':
         specifier: ^20.11.28
         version: 20.19.9
@@ -127,8 +130,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /@babel/runtime@7.27.6:
-    resolution: {integrity: sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==}
+  /@babel/runtime@7.28.2:
+    resolution: {integrity: sha512-KHp2IflsnGywDjBWDkR9iEqiWSpc8GIi0lgTT3mOElT0PP1tG26P4tmFI2YvAdzgq9RGyoHZQEIEdZy6Ec5xCA==}
     engines: {node: '>=6.9.0'}
     dev: false
 
@@ -199,7 +202,7 @@ packages:
       react: ^16.8.5 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.5 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.2
       css-box-model: 1.2.1
       memoize-one: 6.0.0
       raf-schd: 4.0.3
@@ -603,6 +606,13 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@playwright/test@1.54.1:
+    resolution: {integrity: sha512-FS8hQ12acieG2dYSksmLOF7BNxnVf2afRJdCuM1eMSxj6QTSE6G4InGF7oApGgDb65MX7AwMVlIkpru0yZA4Xw==}
+    engines: {node: '>=18'}
+    hasBin: true
+    dependencies:
+      playwright: 1.54.1
 
   /@remix-run/router@1.23.0:
     resolution: {integrity: sha512-O3rHJzAQKamUz1fvE0Qaw0xSFqsA/yafi2iqeE0pvdFtCO1viYx8QL6f3Ln/aCCTLxs68SLf0KPM9eSeM8yBnA==}
@@ -1273,7 +1283,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001727
-      electron-to-chromium: 1.5.190
+      electron-to-chromium: 1.5.191
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.1)
     dev: true
@@ -1486,7 +1496,7 @@ packages:
     resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
     engines: {node: '>=0.11'}
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.2
     dev: false
 
   /debug@3.2.7:
@@ -1576,8 +1586,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
 
-  /electron-to-chromium@1.5.190:
-    resolution: {integrity: sha512-k4McmnB2091YIsdCgkS0fMVMPOJgxl93ltFzaryXqwip1AaxeDqKCGLxkXODDA5Ab/D+tV5EL5+aTx76RvLRxw==}
+  /electron-to-chromium@1.5.191:
+    resolution: {integrity: sha512-xcwe9ELcuxYLUFqZZxL19Z6HVKcvNkIwhbHUz7L3us6u12yR+7uY89dSl570f/IqNthx8dAw3tojG7i4Ni4tDA==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -2118,6 +2128,13 @@ packages:
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
     dev: true
+
+  /fsevents@2.3.2:
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
+    requiresBuild: true
+    optional: true
 
   /fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -2772,7 +2789,7 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /next@15.4.3(react-dom@18.3.1)(react@18.3.1):
+  /next@15.4.3(@playwright/test@1.54.1)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-uW7Qe6poVasNIE1X382nI29oxSdFJzjQzTgJFLD43MxyPfGKKxCMySllhBpvqr48f58Om+tLMivzRwBpXEytvA==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
     hasBin: true
@@ -2794,6 +2811,7 @@ packages:
         optional: true
     dependencies:
       '@next/env': 15.4.3
+      '@playwright/test': 1.54.1
       '@swc/helpers': 0.5.15
       caniuse-lite: 1.0.30001727
       postcss: 8.4.31
@@ -3002,6 +3020,20 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
+  /playwright-core@1.54.1:
+    resolution: {integrity: sha512-Nbjs2zjj0htNhzgiy5wu+3w09YetDx5pkrpI/kZotDlDUaYk0HVA5xrBVPdow4SAUIlhgKcJeJg4GRKW6xHusA==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  /playwright@1.54.1:
+    resolution: {integrity: sha512-peWpSwIBmSLi6aW2auvrUtf2DqY16YYcCMO8rTVx486jKmDTJg7UAhyrraP98GB8BoPURZP8+nxO7TSd4cPr5g==}
+    engines: {node: '>=18'}
+    hasBin: true
+    dependencies:
+      playwright-core: 1.54.1
+    optionalDependencies:
+      fsevents: 2.3.2
+
   /possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
     engines: {node: '>= 0.4'}
@@ -3150,7 +3182,7 @@ packages:
       redux:
         optional: true
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.2
       '@types/hoist-non-react-statics': 3.3.7(@types/react@18.3.23)
       '@types/react': 18.3.23
       '@types/react-dom': 18.3.7(@types/react@18.3.23)
@@ -3209,7 +3241,7 @@ packages:
   /redux@4.2.1:
     resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.2
     dev: false
 
   /reflect.getprototypeof@1.0.10:

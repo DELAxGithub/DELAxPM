@@ -37,7 +37,7 @@ export function isFeatureEnabled(
   
   if (!userEmail) return false;
   
-  return config.users.includes(userEmail);
+  return Array.isArray(config.users) && config.users.includes(userEmail);
 }
 
 // 開発環境では全機能を有効化するオプション

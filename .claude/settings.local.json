@@ -17,7 +17,11 @@
       "Bash(pnpm run:*)",
       "Bash(git commit:*)",
       "Bash(touch:*)",
-      "Bash(pnpm build:*)"
+      "Bash(pnpm build:*)",
+      "Bash(pnpm dev:*)",
+      "Bash(pnpm status:*)",
+      "Bash(pnpm exec playwright test:*)",
+      "Bash(supabase migration:*)"
     ],
     "deny": []
   }
