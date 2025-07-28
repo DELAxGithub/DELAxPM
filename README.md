@@ -216,3 +216,6 @@ pnpm build --filter=@delaxpm/core
 ## ライセンス
 
 このプロジェクトは私的利用を目的としています。
+<- rm Podfile.lock
+- rm -rf Pods/
+- pod cache clean CI/CD Test: Mon 28 Jul 2025 12:07:07 EDT -->
