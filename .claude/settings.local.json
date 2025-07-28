@@ -21,7 +21,10 @@
       "Bash(pnpm dev:*)",
       "Bash(pnpm status:*)",
       "Bash(pnpm exec playwright test:*)",
-      "Bash(supabase migration:*)"
+      "Bash(supabase migration:*)",
+      "Bash(supabase db:*)",
+      "Bash(supabase status:*)",
+      "Bash(supabase start:*)"
     ],
     "deny": []
   }

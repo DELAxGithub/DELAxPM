@@ -2,7 +2,7 @@
 
 [build]
   command = "pnpm install && pnpm build:unified"
-  publish = "apps/unified/.next"
+  publish = "apps/unified/out"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -13,3 +13,32 @@
 # NEXT_PUBLIC_APP_NAME=DELA×PM統合システム
 # NEXT_PUBLIC_ENABLE_PLATTO=true
 # NEXT_PUBLIC_ENABLE_LIBERARY=true
+# NEXT_PUBLIC_ENABLE_GUEST_ACCESS=true
+
+# Weekly Review Edge Function Environment Variables (set in Supabase Dashboard):
+# SLACK_WEBHOOK_URL=your_slack_webhook_url
+# REVIEW_EMAIL=h.kodera@gmail.com
+# APP_BASE_URL=https://delaxpm.netlify.app
+# RESEND_API_KEY=your_resend_api_key
+
+# リダイレクトルール
+[[redirects]]
+  from = "/liberary-team"
+  to = "/team/liberary"
+  status = 301
+
+[[redirects]]
+  from = "/platto-team"
+  to = "/team/platto"
+  status = 301
+
+# チーム専用URL（短縮URL）
+[[redirects]]
+  from = "/lib"
+  to = "/team/liberary"
+  status = 301
+
+[[redirects]]
+  from = "/pla"
+  to = "/team/platto"
+  status = 301
