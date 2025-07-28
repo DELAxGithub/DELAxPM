@@ -39,7 +39,13 @@
       "Bash(gh secret:*)",
       "Bash(supabase projects:*)",
       "Bash(supabase link:*)",
-      "WebFetch(domain:delaxpm.netlify.app)"
+      "WebFetch(domain:delaxpm.netlify.app)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl:*)",
+      "Bash(pnpm:*)",
+      "Bash(timeout 10 pnpm dev)",
+      "Bash(grep:*)",
+      "Bash(psql:*)"
     ],
     "deny": []
   }

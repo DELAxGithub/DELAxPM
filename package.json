@@ -31,13 +31,22 @@
     "db:setup": "pnpm db:start && pnpm db:migrate && echo '✅ Database setup complete!'",
     "db:validate": "node scripts/validate-migration.js",
     "db:migrate:safe": "pnpm db:migrate && pnpm db:validate",
-    "dev:with-db": "concurrently -n \"supabase,dev\" -c \"cyan,green\" \"pnpm db:start\" \"pnpm dev:unified\""
+    "dev:with-db": "concurrently -n \"supabase,dev\" -c \"cyan,green\" \"pnpm db:start\" \"pnpm dev:unified\"",
+    "claude:commit": "node scripts/auto-commit.js",
+    "claude:hooks": "node scripts/claude-hooks.js",
+    "claude:deploy": "gh workflow run deploy.yml",
+    "claude:test": "gh workflow run test.yml",
+    "claude:auto": "pnpm claude:hooks && pnpm claude:commit",
+    "claude:full": "pnpm claude:hooks && pnpm claude:commit && pnpm claude:deploy",
+    "claude:check": "pnpm type-check && pnpm lint && pnpm build:unified && echo '✅ All checks passed'",
+    "deploy:prod": "pnpm claude:check && gh workflow run deploy.yml && echo '🚀 Production deployment triggered'",
+    "deploy:auto": "pnpm claude:auto && echo '🤖 Auto-deployment pipeline started'"
   },
   "devDependencies": {
     "turbo": "^2.3.1"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.0.0",
     "pnpm": ">=8.0.0"
   },
   "packageManager": "pnpm@8.15.0",

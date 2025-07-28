@@ -1,0 +1,87 @@
+{
+  "timestamp": "2025-07-28T15:49:23.396Z",
+  "summary": {
+    "total": 10,
+    "passed": 6,
+    "failed": 4,
+    "successRate": "60%"
+  },
+  "tests": [
+    {
+      "name": "Project Structure Validation",
+      "status": "passed",
+      "duration": 0,
+      "result": {
+        "files": 10,
+        "directories": 3
+      }
+    },
+    {
+      "name": "Package Scripts Test",
+      "status": "passed",
+      "duration": 0,
+      "result": {
+        "scriptsCount": 38
+      }
+    },
+    {
+      "name": "GitHub Workflows Test",
+      "status": "passed",
+      "duration": 1,
+      "result": {
+        "workflows": 2,
+        "validated": true
+      }
+    },
+    {
+      "name": "Script Execution Test",
+      "status": "failed",
+      "duration": 67,
+      "error": "Script scripts/supabase-auto-migrate.js has syntax errors: Command failed: node -c scripts/supabase-auto-migrate.js\n/Users/hiroshikodera/repos/_active/apps/DELAxPM/scripts/supabase-auto-migrate.js:231\n          query: 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = \\\\'public\\\\''\n                                                                                         ^^^^^^^\n\nSyntaxError: Invalid or unexpected token\n    at wrapSafe (node:internal/modules/cjs/loader:1666:18)\n    at checkSyntax (node:internal/main/check_syntax:76:3)\n\nNode.js v23.11.0\n"
+    },
+    {
+      "name": "Dependencies Test",
+      "status": "failed",
+      "duration": 385,
+      "error": "Critical dependency missing: next"
+    },
+    {
+      "name": "TypeScript Test",
+      "status": "passed",
+      "duration": 976,
+      "result": {
+        "typeCheckPassed": true
+      }
+    },
+    {
+      "name": "Linting Test",
+      "status": "failed",
+      "duration": 1494,
+      "error": "Linting errors detected: Command failed: pnpm lint\nturbo 2.5.5\n\n@delaxpm/unified:lint: ERROR: command finished with error: command (/Users/hiroshikodera/repos/_active/apps/DELAxPM/apps/unified) /Users/hiroshikodera/Library/pnpm/.tools/pnpm/8.15.0/bin/pnpm run lint exited (1)\n@delaxpm/unified#lint: command (/Users/hiroshikodera/repos/_active/apps/DELAxPM/apps/unified) /Users/hiroshikodera/Library/pnpm/.tools/pnpm/8.15.0/bin/pnpm run lint exited (1)\n ERROR  run failed: command  exited (1)\n"
+    },
+    {
+      "name": "Build Test",
+      "status": "failed",
+      "duration": 7001,
+      "error": "Build failed: Command failed: pnpm build:unified\nturbo 2.5.5\n\n@delaxpm/unified:build: ERROR: command finished with error: command (/Users/hiroshikodera/repos/_active/apps/DELAxPM/apps/unified) /Users/hiroshikodera/Library/pnpm/.tools/pnpm/8.15.0/bin/pnpm run build exited (1)\n@delaxpm/unified#build: command (/Users/hiroshikodera/repos/_active/apps/DELAxPM/apps/unified) /Users/hiroshikodera/Library/pnpm/.tools/pnpm/8.15.0/bin/pnpm run build exited (1)\n ERROR  run failed: command  exited (1)\n"
+    },
+    {
+      "name": "Configuration Files Test",
+      "status": "passed",
+      "duration": 1,
+      "result": {
+        "configValid": true,
+        "sections": 4
+      }
+    },
+    {
+      "name": "Integration Test",
+      "status": "passed",
+      "duration": 3005,
+      "result": {
+        "integrationSteps": 3
+      }
+    }
+  ],
+  "systemReady": false
+}

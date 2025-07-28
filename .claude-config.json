@@ -1,0 +1,55 @@
+{
+  "autoCommit": {
+    "enabled": true,
+    "autoTest": true,
+    "autoPush": true,
+    "commitPrefix": "🤖 Claude:",
+    "qualityGates": true,
+    "maxFileSize": 1048576,
+    "excludePatterns": [
+      "node_modules/**",
+      ".next/**",
+      "dist/**",
+      "out/**",
+      "*.log",
+      ".env*",
+      "playwright-report/**",
+      "test-results/**"
+    ]
+  },
+  "hooks": {
+    "enabled": true,
+    "autoCommit": true,
+    "autoTest": true,
+    "autoDeploy": false,
+    "generateReport": true
+  },
+  "notifications": {
+    "console": true,
+    "file": true,
+    "slack": false
+  },
+  "quality": {
+    "requireTests": false,
+    "requireLint": true,
+    "requireBuild": true,
+    "requireTypeCheck": true
+  },
+  "deployment": {
+    "production": {
+      "autoTrigger": false,
+      "requireApproval": true,
+      "healthCheck": true
+    },
+    "staging": {
+      "autoTrigger": true,
+      "requireApproval": false,
+      "healthCheck": true
+    }
+  },
+  "claude": {
+    "sessionTracking": true,
+    "progressReports": true,
+    "autoDocumentation": false
+  }
+}

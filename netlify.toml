@@ -5,7 +5,7 @@
   publish = "apps/unified/out"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 # Environment variables should be set in Netlify UI:
 # NEXT_PUBLIC_SUPABASE_URL=https://pfrzcteapmwufnovmmfc.supabase.co

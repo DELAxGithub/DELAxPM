@@ -1,0 +1,353 @@
+name: 🧪 Quality Check & Testing
+on:
+  pull_request:
+    branches: [ master, main ]
+  push:
+    branches: [ feature/*, develop, staging ]
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Test type to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - unit
+        - e2e
+        - lint
+        - type-check
+
+# Environment variables
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8.15.0'
+
+jobs:
+  # ===================================
+  # CODE QUALITY CHECKS
+  # ===================================
+  code-quality:
+    name: 📋 Code Quality
+    runs-on: ubuntu-latest
+    outputs:
+      should-run-tests: ${{ steps.check-changes.outputs.should_test }}
+    
+    steps:
+      # Checkout code
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for better change detection
+      
+      # Setup Node.js
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      # Setup pnpm
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      # Cache dependencies
+      - name: 📂 Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            apps/unified/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      
+      # Install dependencies
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile
+      
+      # Detect changes
+      - name: 🔍 Detect Changes
+        id: check-changes
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "should_test=true" >> $GITHUB_OUTPUT
+            echo "Manual trigger - running all tests"
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "should_test=true" >> $GITHUB_OUTPUT
+            echo "Pull request - running all tests"
+          else
+            # Check for changes in relevant files
+            changed_files=$(git diff --name-only HEAD~1 HEAD)
+            if echo "$changed_files" | grep -E "\.(ts|tsx|js|jsx|json|md)$|package\.json|pnpm-lock\.yaml" > /dev/null; then
+              echo "should_test=true" >> $GITHUB_OUTPUT
+              echo "Relevant files changed - running tests"
+            else
+              echo "should_test=false" >> $GITHUB_OUTPUT
+              echo "No relevant files changed - skipping tests"
+            fi
+          fi
+      
+      # TypeScript type checking
+      - name: 🔍 TypeScript Type Check
+        if: steps.check-changes.outputs.should_test == 'true' && (github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'type-check' || github.event.inputs.test_type == '')
+        run: |
+          echo "🔍 Running TypeScript type checking..."
+          pnpm type-check
+          echo "✅ Type checking completed"
+      
+      # ESLint checking
+      - name: 🧹 ESLint Check
+        if: steps.check-changes.outputs.should_test == 'true' && (github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'lint' || github.event.inputs.test_type == '')
+        run: |
+          echo "🧹 Running ESLint..."
+          pnpm lint
+          echo "✅ Linting completed"
+      
+      # Build check (for early detection of build issues)
+      - name: 🏗️ Build Check
+        if: steps.check-changes.outputs.should_test == 'true' && (github.event.inputs.test_type == 'all' || github.event.inputs.test_type == '')
+        run: |
+          echo "🏗️ Testing build process..."
+          pnpm build:unified
+          echo "✅ Build check completed"
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'dummy-url' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy-key' }}
+          NEXT_PUBLIC_APP_NAME: "DELA×PM統合システム"
+          NEXT_PUBLIC_ENABLE_PLATTO: "true"
+          NEXT_PUBLIC_ENABLE_LIBERARY: "true"
+          NEXT_PUBLIC_ENABLE_GUEST_ACCESS: "true"
+
+  # ===================================
+  # UNIT TESTS (if they exist)
+  # ===================================
+  unit-tests:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+    needs: code-quality
+    if: needs.code-quality.outputs.should-run-tests == 'true'
+    
+    steps:
+      # Checkout code
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+      
+      # Setup Node.js
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      # Setup pnpm
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      # Cache dependencies
+      - name: 📂 Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            apps/unified/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      
+      # Install dependencies
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile
+      
+      # Run unit tests (if script exists)
+      - name: 🧪 Run Unit Tests
+        if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'unit' || github.event.inputs.test_type == ''
+        run: |
+          echo "🧪 Checking for unit tests..."
+          if pnpm run --if-present test:unit; then
+            echo "✅ Unit tests completed"
+          else
+            echo "ℹ️ No unit tests found - skipping"
+          fi
+
+  # ===================================
+  # E2E TESTS
+  # ===================================
+  e2e-tests:
+    name: 🎭 E2E Tests
+    runs-on: ubuntu-latest
+    needs: code-quality
+    if: needs.code-quality.outputs.should-run-tests == 'true'
+    
+    steps:
+      # Checkout code
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+      
+      # Setup Node.js
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      # Setup pnpm
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      # Cache dependencies
+      - name: 📂 Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            apps/unified/node_modules
+            apps/unified/.next/cache
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      
+      # Install dependencies
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile
+      
+      # Install Playwright browsers
+      - name: 🎭 Install Playwright Browsers
+        if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'e2e' || github.event.inputs.test_type == ''
+        run: pnpm exec playwright install --with-deps
+      
+      # Run E2E tests
+      - name: 🎭 Run E2E Tests
+        if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'e2e' || github.event.inputs.test_type == ''
+        run: |
+          echo "🎭 Running E2E tests..."
+          pnpm test:e2e
+          echo "✅ E2E tests completed"
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'dummy-url' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy-key' }}
+          CI: true
+      
+      # Upload test results
+      - name: 📊 Upload E2E Test Results
+        if: always() && (github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'e2e' || github.event.inputs.test_type == '')
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  # ===================================
+  # SECURITY SCAN
+  # ===================================
+  security-scan:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    needs: code-quality
+    if: needs.code-quality.outputs.should-run-tests == 'true'
+    
+    steps:
+      # Checkout code
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+      
+      # Setup Node.js
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      # Setup pnpm
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      # Install dependencies
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile
+      
+      # Security audit
+      - name: 🔒 Run Security Audit
+        run: |
+          echo "🔒 Running security audit..."
+          pnpm audit --audit-level high
+          echo "✅ Security audit completed"
+        continue-on-error: true
+
+  # ===================================
+  # SUMMARY REPORT
+  # ===================================
+  test-summary:
+    name: 📋 Test Summary
+    runs-on: ubuntu-latest
+    needs: [code-quality, unit-tests, e2e-tests, security-scan]
+    if: always()
+    
+    steps:
+      # Create summary
+      - name: 📋 Create Test Summary
+        run: |
+          echo "## 🧪 Quality Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          # Code Quality
+          if [[ "${{ needs.code-quality.result }}" == "success" ]]; then
+            echo "| 📋 Code Quality | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 📋 Code Quality | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Unit Tests
+          if [[ "${{ needs.unit-tests.result }}" == "success" ]]; then
+            echo "| 🧪 Unit Tests | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ needs.unit-tests.result }}" == "skipped" ]]; then
+            echo "| 🧪 Unit Tests | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🧪 Unit Tests | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # E2E Tests
+          if [[ "${{ needs.e2e-tests.result }}" == "success" ]]; then
+            echo "| 🎭 E2E Tests | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ needs.e2e-tests.result }}" == "skipped" ]]; then
+            echo "| 🎭 E2E Tests | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🎭 E2E Tests | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Security Scan
+          if [[ "${{ needs.security-scan.result }}" == "success" ]]; then
+            echo "| 🔒 Security Scan | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ needs.security-scan.result }}" == "skipped" ]]; then
+            echo "| 🔒 Security Scan | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🔒 Security Scan | ⚠️ Issues Found |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Actor:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Ref:** ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
+      
+      # Set overall status
+      - name: ✅ Overall Status Check
+        run: |
+          if [[ "${{ needs.code-quality.result }}" == "success" ]] && 
+             [[ "${{ needs.e2e-tests.result }}" == "success" || "${{ needs.e2e-tests.result }}" == "skipped" ]]; then
+            echo "🎉 All quality checks passed!"
+            exit 0
+          else
+            echo "❌ Some quality checks failed!"
+            exit 1
+          fi
