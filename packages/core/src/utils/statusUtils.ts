@@ -17,16 +17,15 @@ export const getProgramStatusColor = (status: string): string => {
 
 export const getEpisodeStatusColor = (status: string): string => {
   const colorMap: Record<string, string> = {
-    [EpisodeStatuses.SCRIPT_CREATION]: '#6B7280',
-    [EpisodeStatuses.MATERIAL_PREPARATION]: '#8B5CF6',
-    [EpisodeStatuses.MATERIAL_CONFIRMED]: '#6366F1',
-    [EpisodeStatuses.EDITING]: '#3B82F6',
-    [EpisodeStatuses.PREVIEW_1]: '#06B6D4',
-    [EpisodeStatuses.REVISION_1]: '#10B981',
-    [EpisodeStatuses.AUDIO_MIXING]: '#84CC16',
-    [EpisodeStatuses.FIRST_DRAFT_COMPLETE]: '#EAB308',
-    [EpisodeStatuses.REVISION]: '#F59E0B',
-    [EpisodeStatuses.FINAL_DELIVERY]: '#22C55E'
+    [EpisodeStatuses.CASTING]: '#6B7280',
+    [EpisodeStatuses.LOCATION_COMPLETE]: '#8B5CF6',
+    [EpisodeStatuses.VIDEO_EDITING_COMPLETE]: '#6366F1',
+    [EpisodeStatuses.AUDIO_MIXING_COMPLETE]: '#3B82F6',
+    [EpisodeStatuses.FIRST_PREVIEW_COMPLETE]: '#06B6D4',
+    [EpisodeStatuses.STATION_PREVIEW_COMPLETE]: '#10B981',
+    [EpisodeStatuses.FINAL_PACKAGE_COMPLETE]: '#84CC16',
+    [EpisodeStatuses.ON_AIR_COMPLETE]: '#EAB308',
+    [EpisodeStatuses.BILLING_COMPLETE]: '#22C55E'
   };
   return colorMap[status] || '#6B7280';
 };

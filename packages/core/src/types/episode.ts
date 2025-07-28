@@ -1,32 +1,48 @@
 export interface Episode {
   id: number;
-  episode_id: string;
-  program_id: number;
+  episode_id?: string;
   title: string;
-  episode_type: 'interview' | 'vtr' | 'regular';
-  season: number;
-  episode_number: number;
+  subtitle?: string;
+  episode_type?: 'regular' | 'special' | 'pilot';
+  episode_number?: number;
+  season?: number;
+  status?: string;
   project_type: 'platto' | 'liberary' | 'unified';
+  
+  // 日程関連
+  first_air_date?: string;
+  re_air_date?: string;
+  filming_date?: string;
+  complete_date?: string;
+  
+  // スタッフ・キャスト
+  cast1?: string;
+  cast2?: string;
+  director?: string;
+  producer?: string;
   
   // 制作情報
   script_url?: string;
-  current_status?: string;
-  director?: string;
-  due_date?: string;
-  
-  // インタビュー用項目
-  interview_guest?: string;
-  interview_date?: string;
-  interview_location?: string;
-  
-  // VTR用項目
-  vtr_location?: string;
-  vtr_theme?: string;
-  
-  // その他
+  pr_text?: string;
   notes?: string;
-  estimated_duration?: string;
-  assigned_users?: string[];
+  client_name?: string;
+  budget?: number;
+  broadcast_time?: string;
+  
+  // 進捗日程（プラッと用）
+  editing_date?: string;
+  mixing_date?: string;
+  first_preview_date?: string;
+  station_preview_date?: string;
+  final_package_date?: string;
+  on_air_date?: string;
+  billing_date?: string;
+  
+  // PR管理（プラッと用）
+  pr_80text?: string;
+  pr_200text?: string;
+  pr_completed?: boolean;
+  pr_due_date?: string;
   
   // 統合管理情報
   source_system?: string;
@@ -34,40 +50,47 @@ export interface Episode {
   legacy_id?: string;
   
   // システム管理
+  assigned_users?: string[];
   created_by?: string;
   created_at?: string;
   updated_at?: string;
 }
 
-export interface EpisodeStatus {
-  id: number;
-  status_name: string;
-  status_order: number;
-  color_code?: string;
-  created_at?: string;
-}
-
-export interface StatusHistory {
-  id: number;
-  episode_id: number;
-  old_status?: string;
-  new_status: string;
-  changed_by?: string;
-  changed_at: string;
-  notes?: string;
+export interface EpisodeExtended extends Episode {
+  director?: string;
+  editing_date?: string;
+  mixing_date?: string;
+  first_preview_date?: string;
+  station_preview_date?: string;
+  final_package_date?: string;
+  on_air_date?: string;
+  billing_date?: string;
+  broadcast_time?: string;
+  client_name?: string;
+  budget?: number;
+  assigned_users?: string[];
 }
 
 export const EpisodeStatuses = {
-  SCRIPT_CREATION: '台本作成中',
-  MATERIAL_PREPARATION: '素材準備',
-  MATERIAL_CONFIRMED: '素材確定',
-  EDITING: '編集中',
-  PREVIEW_1: '試写1',
-  REVISION_1: '修正1',
-  AUDIO_MIXING: 'MA中',
-  FIRST_DRAFT_COMPLETE: '初稿完成',
-  REVISION: '修正中',
-  FINAL_DELIVERY: '完パケ納品'
+  CASTING: 'キャスティング中',
+  LOCATION_COMPLETE: 'ロケ済',
+  VIDEO_EDITING_COMPLETE: 'VE済',
+  AUDIO_MIXING_COMPLETE: 'MA済',
+  FIRST_PREVIEW_COMPLETE: '初号試写済',
+  STATION_PREVIEW_COMPLETE: '局プレ済',
+  FINAL_PACKAGE_COMPLETE: '完パケ済',
+  ON_AIR_COMPLETE: 'OA済',
+  BILLING_COMPLETE: '請求済'
 } as const;
 
 export type EpisodeStatusType = typeof EpisodeStatuses[keyof typeof EpisodeStatuses];
+
+// Backward compatibility aliases (deprecated)
+/** @deprecated Use Episode instead */
+export type Program = Episode;
+/** @deprecated Use EpisodeExtended instead */
+export type ProgramExtended = EpisodeExtended;
+/** @deprecated Use EpisodeStatuses instead */
+export const ProgramStatuses = EpisodeStatuses;
+/** @deprecated Use EpisodeStatusType instead */
+export type ProgramStatusType = EpisodeStatusType;

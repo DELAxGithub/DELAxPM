@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@delaxpm/core'],
   },
-  output: 'export',
+  // Temporarily disabled for testing database redesign
+  // output: 'export',
   trailingSlash: true,
   images: {
     unoptimized: true

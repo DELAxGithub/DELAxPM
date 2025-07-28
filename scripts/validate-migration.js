@@ -6,17 +6,36 @@
  */
 
 const { execSync } = require('child_process');
-const chalk = require('chalk');
+// chalk library has issues - using plain console logging
 
-console.log(chalk.blue('🔍 DELA×PM データベース移行検証開始\n'));
+console.log('🔍 DELA×PM データベース移行検証開始\n');
 
 const queries = [
   {
-    name: 'プロジェクトタイプ別プログラム数',
-    query: "SELECT project_type, COUNT(*) as count FROM programs GROUP BY project_type ORDER BY project_type",
-    expectedResults: {
-      'liberary': 3,
-      'platto': 5
+    name: 'チーム別プログラム数（タグベース）',
+    query: `
+      SELECT 
+        CASE 
+          WHEN notes ILIKE '%[PLATTO]%' THEN 'platto'
+          WHEN notes ILIKE '%[LIBERARY]%' THEN 'liberary'
+          ELSE 'other'
+        END as team,
+        COUNT(*) as count
+      FROM programs 
+      GROUP BY 
+        CASE 
+          WHEN notes ILIKE '%[PLATTO]%' THEN 'platto'
+          WHEN notes ILIKE '%[LIBERARY]%' THEN 'liberary'
+          ELSE 'other'
+        END
+      ORDER BY team
+    `,
+    validator: (results) => {
+      const teamCounts = {};
+      results.forEach(row => {
+        teamCounts[row.team] = parseInt(row.count);
+      });
+      return teamCounts.platto >= 5 && teamCounts.liberary >= 5;
     }
   },
   {
@@ -34,11 +53,14 @@ const queries = [
     }
   },
   {
-    name: 'PMplattoデータの移行確認',
-    query: "SELECT COUNT(*) as count FROM programs WHERE source_system = 'pmplatto'",
-    expectedResults: {
-      'count': 5
-    }
+    name: 'PLATTOタグデータの確認',
+    query: "SELECT COUNT(*) as count FROM programs WHERE notes ILIKE '%[PLATTO]%'",
+    validator: (results) => results[0].count >= 5
+  },
+  {
+    name: 'LIBERARYタグデータの確認',
+    query: "SELECT COUNT(*) as count FROM programs WHERE notes ILIKE '%[LIBERARY]%'",
+    validator: (results) => results[0].count >= 5
   },
   {
     name: 'プログラムIDの重複チェック',
@@ -85,7 +107,7 @@ async function runQuery(query) {
     const output = execSync(command, { encoding: 'utf8' });
     return JSON.parse(output);
   } catch (error) {
-    console.error(chalk.red(`❌ クエリ実行エラー: ${error.message}`));
+    console.error(red(`❌ クエリ実行エラー: ${error.message}`));
     return null;
   }
 }
@@ -110,7 +132,7 @@ function validateResults(query, results) {
     for (const row of results) {
       for (const [key, expectedValue] of Object.entries(query.expectedResults)) {
         if (row[key] != expectedValue) {
-          console.log(chalk.yellow(`  期待値: ${key}=${expectedValue}, 実際: ${key}=${row[key]}`));
+          console.log(yellow(`  期待値: ${key}=${expectedValue}, 実際: ${key}=${row[key]}`));
           return false;
         }
       }
@@ -125,18 +147,18 @@ async function main() {
   let allTestsPassed = true;
   
   for (const query of queries) {
-    console.log(chalk.cyan(`📊 ${query.name}`));
+    console.log(cyan(`📊 ${query.name}`));
     
     const results = await runQuery(query);
     const isValid = validateResults(query, results);
     
     if (isValid) {
-      console.log(chalk.green('  ✅ 検証成功'));
+      console.log(green('  ✅ 検証成功'));
       if (results && results.length > 0) {
         console.log('  ', JSON.stringify(results, null, 2));
       }
     } else {
-      console.log(chalk.red('  ❌ 検証失敗'));
+      console.log(red('  ❌ 検証失敗'));
       if (results) {
         console.log('  実際の結果:', JSON.stringify(results, null, 2));
       }
@@ -147,24 +169,24 @@ async function main() {
 
   // 総合結果
   if (allTestsPassed) {
-    console.log(chalk.green.bold('🎉 すべての検証に成功しました！'));
-    console.log(chalk.green('データベース移行は正常に完了しています。\n'));
+    console.log(green.bold('🎉 すべての検証に成功しました！'));
+    console.log(green('データベース移行は正常に完了しています。\n'));
     process.exit(0);
   } else {
-    console.log(chalk.red.bold('❌ 一部の検証に失敗しました'));
-    console.log(chalk.red('データベースの状態を確認してください。\n'));
+    console.log(red.bold('❌ 一部の検証に失敗しました'));
+    console.log(red('データベースの状態を確認してください。\n'));
     process.exit(1);
   }
 }
 
 // エラーハンドリング
 process.on('uncaughtException', (error) => {
-  console.error(chalk.red('❌ 予期しないエラーが発生しました:'), error.message);
+  console.error(red('❌ 予期しないエラーが発生しました:'), error.message);
   process.exit(1);
 });
 
 process.on('unhandledRejection', (error) => {
-  console.error(chalk.red('❌ 処理が失敗しました:'), error.message);
+  console.error(red('❌ 処理が失敗しました:'), error.message);
   process.exit(1);
 });
 

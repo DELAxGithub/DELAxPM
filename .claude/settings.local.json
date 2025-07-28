@@ -24,7 +24,22 @@
       "Bash(supabase migration:*)",
       "Bash(supabase db:*)",
       "Bash(supabase status:*)",
-      "Bash(supabase start:*)"
+      "Bash(supabase start:*)",
+      "Bash(npm install:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pkill:*)",
+      "Bash(pnpm db:setup:*)",
+      "Bash(supabase stop:*)",
+      "Bash(mv:*)",
+      "Bash(pnpm db:start:*)",
+      "Bash(pnpm db:validate:*)",
+      "Bash(docker exec:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh secret:*)",
+      "Bash(supabase projects:*)",
+      "Bash(supabase link:*)",
+      "WebFetch(domain:delaxpm.netlify.app)"
     ],
     "deny": []
   }

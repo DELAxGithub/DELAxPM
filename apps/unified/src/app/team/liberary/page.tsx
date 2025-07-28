@@ -1,12 +1,12 @@
 'use client';
 
-import { usePrograms } from '@delaxpm/core';
+import { useEpisodes } from '@delaxpm/core';
 import { supabase } from '../../../lib/supabase';
 import { LoadingSpinner, ErrorMessage, StatusBadge } from '@delaxpm/core';
 import Link from 'next/link';
 
 export default function LiberaryTeamPage() {
-  const { programs, loading, error, refetch } = usePrograms(supabase, {
+  const { episodes, loading, error, refetch } = useEpisodes(supabase, {
     projectType: 'liberary',
     sortBy: 'updated_at',
     sortOrder: 'desc'
@@ -48,7 +48,7 @@ export default function LiberaryTeamPage() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-green-200">
-                {programs.length} 番組・エピソード
+                {episodes.length} 番組・エピソード
               </span>
               <button
                 onClick={refetch}
@@ -81,7 +81,7 @@ export default function LiberaryTeamPage() {
 
       {/* メインコンテンツ */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {programs.length === 0 ? (
+        {episodes.length === 0 ? (
           <div className="text-center py-12">
             <div className="icon-container w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="48" height="48">
@@ -103,62 +103,62 @@ export default function LiberaryTeamPage() {
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {programs.map((program) => (
+            {episodes.map((episode) => (
               <div
-                key={program.id}
+                key={episode.id}
                 className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-6 border-l-4 border-green-400"
               >
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
-                    {program.title}
+                    {episode.title}
                   </h3>
-                  {program.status && (
+                  {episode.status && (
                     <StatusBadge
-                      status={program.status}
+                      status={episode.status}
                       type="program"
                       size="sm"
                     />
                   )}
                 </div>
                 
-                {program.subtitle && (
+                {episode.subtitle && (
                   <p className="text-sm text-gray-600 mb-3">
-                    {program.subtitle}
+                    {episode.subtitle}
                   </p>
                 )}
 
                 <div className="space-y-2 text-sm text-gray-500">
-                  {program.first_air_date && (
+                  {episode.first_air_date && (
                     <div className="flex items-center">
                       <span className="font-medium">初回放送:</span>
-                      <span className="ml-2">{program.first_air_date}</span>
+                      <span className="ml-2">{episode.first_air_date}</span>
                     </div>
                   )}
-                  {program.director && (
+                  {episode.director && (
                     <div className="flex items-center">
                       <span className="font-medium">演出:</span>
-                      <span className="ml-2">{program.director}</span>
+                      <span className="ml-2">{episode.director}</span>
                     </div>
                   )}
-                  {program.cast1 && (
+                  {episode.cast1 && (
                     <div className="flex items-center">
                       <span className="font-medium">出演:</span>
-                      <span className="ml-2">{program.cast1}</span>
+                      <span className="ml-2">{episode.cast1}</span>
                     </div>
                   )}
                 </div>
 
-                {program.notes && (
+                {episode.notes && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <p className="text-sm text-gray-600 line-clamp-3">
-                      {program.notes}
+                      {episode.notes}
                     </p>
                   </div>
                 )}
 
                 <div className="mt-4 flex justify-between items-center">
                   <span className="text-xs text-gray-400">
-                    {program.updated_at && new Date(program.updated_at).toLocaleDateString('ja-JP')}
+                    {episode.updated_at && new Date(episode.updated_at).toLocaleDateString('ja-JP')}
                   </span>
                   <button className="text-green-600 hover:text-green-700 text-sm font-medium">
                     詳細を見る

@@ -1,6 +1,6 @@
 'use client';
 
-import { usePrograms, useEpisodes } from '@delaxpm/core';
+import { useEpisodes } from '@delaxpm/core';
 import { supabase } from '../../lib/supabase';
 import { LoadingSpinner, ErrorMessage } from '@delaxpm/core';
 import { useAuth } from '../../contexts/AuthContext';
@@ -9,7 +9,7 @@ import Link from 'next/link';
 export default function DashboardPage() {
   const { user, isGuest, signOut } = useAuth();
   
-  const { programs: plattoPrograms, loading: plattoLoading } = usePrograms(supabase, {
+  const { episodes: plattoEpisodes, loading: plattoLoading } = useEpisodes(supabase, {
     projectType: 'platto'
   });
   
@@ -27,20 +27,20 @@ export default function DashboardPage() {
     );
   }
 
-  const plattoInProgress = plattoPrograms.filter(p => 
-    p.status && !['OA済', '請求済'].includes(p.status)
+  const plattoInProgress = plattoEpisodes.filter(e => 
+    e.status && !['OA済', '請求済'].includes(e.status)
   ).length;
 
-  const plattoCompleted = plattoPrograms.filter(p => 
-    p.status && ['OA済', '請求済'].includes(p.status)
+  const plattoCompleted = plattoEpisodes.filter(e => 
+    e.status && ['OA済', '請求済'].includes(e.status)
   ).length;
 
   const liberaryInProgress = liberaryEpisodes.filter(e => 
-    e.current_status && e.current_status !== '完パケ納品'
+    e.status && e.status !== '完パケ納品'
   ).length;
 
   const liberaryCompleted = liberaryEpisodes.filter(e => 
-    e.current_status === '完パケ納品'
+    e.status === '完パケ納品'
   ).length;
 
   return (
@@ -171,7 +171,7 @@ export default function DashboardPage() {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">全体</span>
-                <span className="text-sm font-medium">{plattoPrograms.length} 番組</span>
+                <span className="text-sm font-medium">{plattoEpisodes.length} 番組</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">進行中</span>
@@ -181,18 +181,18 @@ export default function DashboardPage() {
                 <span className="text-sm text-gray-600">完了</span>
                 <span className="text-sm font-medium text-green-600">{plattoCompleted} 番組</span>
               </div>
-              {plattoPrograms.length > 0 && (
+              {plattoEpisodes.length > 0 && (
                 <div className="pt-2">
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
                       className="bg-blue-600 h-2 rounded-full" 
                       style={{ 
-                        width: `${(plattoCompleted / plattoPrograms.length) * 100}%` 
+                        width: `${(plattoCompleted / plattoEpisodes.length) * 100}%` 
                       }}
                     ></div>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    完了率: {Math.round((plattoCompleted / plattoPrograms.length) * 100)}%
+                    完了率: {Math.round((plattoCompleted / plattoEpisodes.length) * 100)}%
                   </p>
                 </div>
               )}

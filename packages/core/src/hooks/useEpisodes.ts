@@ -160,7 +160,7 @@ export function useEpisodes(
   }, [supabase]);
 
   const updateEpisodeStatus = useCallback(async (id: number, status: string): Promise<Episode | null> => {
-    return updateEpisode(id, { current_status: status });
+    return updateEpisode(id, { status: status });
   }, [updateEpisode]);
 
   const deleteEpisode = useCallback(async (id: number): Promise<boolean> => {

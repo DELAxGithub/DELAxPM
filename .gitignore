@@ -122,3 +122,5 @@ test-results/
 
 # Package lock files
 package-lock.json
+# Local Netlify folder
+.netlify

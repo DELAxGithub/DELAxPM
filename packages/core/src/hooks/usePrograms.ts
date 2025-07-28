@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Program } from '../types/program';
+import { Episode } from '../types/episode';
 
-export interface UseProgramsOptions {
+export interface UseEpisodesOptions {
   projectType?: 'platto' | 'liberary' | 'unified';
   status?: string;
   limit?: number;
@@ -9,22 +9,37 @@ export interface UseProgramsOptions {
   sortOrder?: 'asc' | 'desc';
 }
 
-export interface UseProgramsReturn {
-  programs: Program[];
+export interface UseEpisodesReturn {
+  episodes: Episode[];
   loading: boolean;
   error: string | null;
   totalCount: number;
   refetch: () => Promise<void>;
-  createProgram: (program: Partial<Program>) => Promise<Program | null>;
-  updateProgram: (id: number, updates: Partial<Program>) => Promise<Program | null>;
+  createEpisode: (episode: Partial<Episode>) => Promise<Episode | null>;
+  updateEpisode: (id: number, updates: Partial<Episode>) => Promise<Episode | null>;
+  deleteEpisode: (id: number) => Promise<boolean>;
+}
+
+// Backward compatibility aliases (deprecated)
+/** @deprecated Use UseEpisodesOptions instead */
+export type UseProgramsOptions = UseEpisodesOptions;
+/** @deprecated Use UseEpisodesReturn instead - note: programs property is now episodes */
+export interface UseProgramsReturn {
+  programs: Episode[];
+  loading: boolean;
+  error: string | null;
+  totalCount: number;
+  refetch: () => Promise<void>;
+  createProgram: (program: Partial<Episode>) => Promise<Episode | null>;
+  updateProgram: (id: number, updates: Partial<Episode>) => Promise<Episode | null>;
   deleteProgram: (id: number) => Promise<boolean>;
 }
 
-export function usePrograms(
+export function useEpisodes(
   supabase: any,
-  options: UseProgramsOptions = {}
-): UseProgramsReturn {
-  const [programs, setPrograms] = useState<Program[]>([]);
+  options: UseEpisodesOptions = {}
+): UseEpisodesReturn {
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState(0);
@@ -37,13 +52,13 @@ export function usePrograms(
     sortOrder = 'desc'
   } = options;
 
-  const fetchPrograms = useCallback(async () => {
+  const fetchEpisodes = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
 
       let query = supabase
-        .from('programs')
+        .from('episodes')
         .select('*', { count: 'exact' });
 
       // プロジェクトタイプフィルター（notesフィールドのタグでフィルタ）
@@ -75,45 +90,45 @@ export function usePrograms(
 
       if (error) throw error;
 
-      setPrograms(data || []);
+      setEpisodes(data || []);
       setTotalCount(count || 0);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'プログラム取得エラー');
-      setPrograms([]);
+      setError(err instanceof Error ? err.message : 'エピソード取得エラー');
+      setEpisodes([]);
       setTotalCount(0);
     } finally {
       setLoading(false);
     }
   }, [supabase, projectType, status, limit, sortBy, sortOrder]);
 
-  const createProgram = useCallback(async (program: Partial<Program>): Promise<Program | null> => {
+  const createEpisode = useCallback(async (episode: Partial<Episode>): Promise<Episode | null> => {
     try {
       setError(null);
       
       const { data, error } = await supabase
-        .from('programs')
-        .insert([program])
+        .from('episodes')
+        .insert([episode])
         .select()
         .single();
 
       if (error) throw error;
 
-      setPrograms(prev => [data, ...prev]);
+      setEpisodes(prev => [data, ...prev]);
       setTotalCount(prev => prev + 1);
       
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'プログラム作成エラー');
+      setError(err instanceof Error ? err.message : 'エピソード作成エラー');
       return null;
     }
   }, [supabase]);
 
-  const updateProgram = useCallback(async (id: number, updates: Partial<Program>): Promise<Program | null> => {
+  const updateEpisode = useCallback(async (id: number, updates: Partial<Episode>): Promise<Episode | null> => {
     try {
       setError(null);
       
       const { data, error } = await supabase
-        .from('programs')
+        .from('episodes')
         .update(updates)
         .eq('id', id)
         .select()
@@ -121,48 +136,67 @@ export function usePrograms(
 
       if (error) throw error;
 
-      setPrograms(prev => prev.map(p => p.id === id ? data : p));
+      setEpisodes(prev => prev.map(e => e.id === id ? data : e));
       
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'プログラム更新エラー');
+      setError(err instanceof Error ? err.message : 'エピソード更新エラー');
       return null;
     }
   }, [supabase]);
 
-  const deleteProgram = useCallback(async (id: number): Promise<boolean> => {
+  const deleteEpisode = useCallback(async (id: number): Promise<boolean> => {
     try {
       setError(null);
       
       const { error } = await supabase
-        .from('programs')
+        .from('episodes')
         .delete()
         .eq('id', id);
 
       if (error) throw error;
 
-      setPrograms(prev => prev.filter(p => p.id !== id));
+      setEpisodes(prev => prev.filter(e => e.id !== id));
       setTotalCount(prev => prev - 1);
       
       return true;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'プログラム削除エラー');
+      setError(err instanceof Error ? err.message : 'エピソード削除エラー');
       return false;
     }
   }, [supabase]);
 
   useEffect(() => {
-    fetchPrograms();
-  }, [fetchPrograms]);
+    fetchEpisodes();
+  }, [fetchEpisodes]);
 
   return {
-    programs,
+    episodes,
     loading,
     error,
     totalCount,
-    refetch: fetchPrograms,
-    createProgram,
-    updateProgram,
-    deleteProgram
+    refetch: fetchEpisodes,
+    createEpisode,
+    updateEpisode,
+    deleteEpisode
+  };
+}
+
+// Backward compatibility wrapper (deprecated)
+/** @deprecated Use useEpisodes instead */
+export function usePrograms(
+  supabase: any,
+  options: UseProgramsOptions = {}
+): UseProgramsReturn {
+  const result = useEpisodes(supabase, options);
+  return {
+    programs: result.episodes,
+    loading: result.loading,
+    error: result.error,
+    totalCount: result.totalCount,
+    refetch: result.refetch,
+    createProgram: result.createEpisode,
+    updateProgram: result.updateEpisode,
+    deleteProgram: result.deleteEpisode
   };
 }
