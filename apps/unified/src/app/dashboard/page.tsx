@@ -1,6 +1,6 @@
 'use client';
 
-import { useEpisodes } from '@delaxpm/core';
+import { usePrograms } from '@delaxpm/core';
 import { supabase } from '../../lib/supabase';
 import { LoadingSpinner, ErrorMessage } from '@delaxpm/core';
 import { useAuth } from '../../contexts/AuthContext';
@@ -9,11 +9,11 @@ import Link from 'next/link';
 export default function DashboardPage() {
   const { user, isGuest, signOut } = useAuth();
   
-  const { episodes: plattoEpisodes, loading: plattoLoading } = useEpisodes(supabase, {
+  const { programs: plattoPrograms, loading: plattoLoading } = usePrograms(supabase, {
     projectType: 'platto'
   });
   
-  const { episodes: liberaryEpisodes, loading: liberaryLoading } = useEpisodes(supabase, {
+  const { programs: liberaryPrograms, loading: liberaryLoading } = usePrograms(supabase, {
     projectType: 'liberary'
   });
 
@@ -27,20 +27,20 @@ export default function DashboardPage() {
     );
   }
 
-  const plattoInProgress = plattoEpisodes.filter(e => 
-    e.status && !['OA済', '請求済'].includes(e.status)
+  const plattoInProgress = plattoPrograms.filter(p => 
+    p.status && !['OA済', '請求済'].includes(p.status)
   ).length;
 
-  const plattoCompleted = plattoEpisodes.filter(e => 
-    e.status && ['OA済', '請求済'].includes(e.status)
+  const plattoCompleted = plattoPrograms.filter(p => 
+    p.status && ['OA済', '請求済'].includes(p.status)
   ).length;
 
-  const liberaryInProgress = liberaryEpisodes.filter(e => 
-    e.status && e.status !== '完パケ納品'
+  const liberaryInProgress = liberaryPrograms.filter(p => 
+    p.status && p.status !== '完パケ納品'
   ).length;
 
-  const liberaryCompleted = liberaryEpisodes.filter(e => 
-    e.status === '完パケ納品'
+  const liberaryCompleted = liberaryPrograms.filter(p => 
+    p.status === '完パケ納品'
   ).length;
 
   return (
@@ -171,7 +171,7 @@ export default function DashboardPage() {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">全体</span>
-                <span className="text-sm font-medium">{plattoEpisodes.length} 番組</span>
+                <span className="text-sm font-medium">{plattoPrograms.length} 番組</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">進行中</span>
@@ -181,18 +181,18 @@ export default function DashboardPage() {
                 <span className="text-sm text-gray-600">完了</span>
                 <span className="text-sm font-medium text-green-600">{plattoCompleted} 番組</span>
               </div>
-              {plattoEpisodes.length > 0 && (
+              {plattoPrograms.length > 0 && (
                 <div className="pt-2">
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
                       className="bg-blue-600 h-2 rounded-full" 
                       style={{ 
-                        width: `${(plattoCompleted / plattoEpisodes.length) * 100}%` 
+                        width: `${(plattoCompleted / plattoPrograms.length) * 100}%` 
                       }}
                     ></div>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    完了率: {Math.round((plattoCompleted / plattoEpisodes.length) * 100)}%
+                    完了率: {Math.round((plattoCompleted / plattoPrograms.length) * 100)}%
                   </p>
                 </div>
               )}
@@ -214,7 +214,7 @@ export default function DashboardPage() {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">全体</span>
-                <span className="text-sm font-medium">{liberaryEpisodes.length} エピソード</span>
+                <span className="text-sm font-medium">{liberaryPrograms.length} エピソード</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">進行中</span>
@@ -224,18 +224,18 @@ export default function DashboardPage() {
                 <span className="text-sm text-gray-600">完了</span>
                 <span className="text-sm font-medium text-blue-600">{liberaryCompleted} エピソード</span>
               </div>
-              {liberaryEpisodes.length > 0 && (
+              {liberaryPrograms.length > 0 && (
                 <div className="pt-2">
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
                       className="bg-green-600 h-2 rounded-full" 
                       style={{ 
-                        width: `${(liberaryCompleted / liberaryEpisodes.length) * 100}%` 
+                        width: `${(liberaryCompleted / liberaryPrograms.length) * 100}%` 
                       }}
                     ></div>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    完了率: {Math.round((liberaryCompleted / liberaryEpisodes.length) * 100)}%
+                    完了率: {Math.round((liberaryCompleted / liberaryPrograms.length) * 100)}%
                   </p>
                 </div>
               )}

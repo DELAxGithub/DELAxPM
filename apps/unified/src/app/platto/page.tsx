@@ -1,12 +1,12 @@
 'use client';
 
-import { useEpisodes } from '@delaxpm/core';
+import { usePrograms } from '@delaxpm/core';
 import { supabase } from '../../lib/supabase';
 import { LoadingSpinner, ErrorMessage, StatusBadge } from '@delaxpm/core';
 import Link from 'next/link';
 
 export default function PlattoPage() {
-  const { episodes, loading, error, refetch } = useEpisodes(supabase, {
+  const { programs, loading, error, refetch } = usePrograms(supabase, {
     projectType: 'platto',
     sortBy: 'updated_at',
     sortOrder: 'desc'
@@ -48,7 +48,7 @@ export default function PlattoPage() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">
-                {episodes.length} エピソード
+                {programs.length} エピソード
               </span>
               <button
                 onClick={refetch}
@@ -63,7 +63,7 @@ export default function PlattoPage() {
 
       {/* メインコンテンツ */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {episodes.length === 0 ? (
+        {programs.length === 0 ? (
           <div className="text-center py-12">
             <div className="icon-container w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="48" height="48">
@@ -85,62 +85,62 @@ export default function PlattoPage() {
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {episodes.map((episode) => (
+            {programs.map((program) => (
               <div
-                key={episode.id}
+                key={program.id}
                 className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-6"
               >
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
-                    {episode.title}
+                    {program.title}
                   </h3>
-                  {episode.status && (
+                  {program.status && (
                     <StatusBadge
-                      status={episode.status}
+                      status={program.status}
                       type="program"
                       size="sm"
                     />
                   )}
                 </div>
                 
-                {episode.subtitle && (
+                {program.subtitle && (
                   <p className="text-sm text-gray-600 mb-3">
-                    {episode.subtitle}
+                    {program.subtitle}
                   </p>
                 )}
 
                 <div className="space-y-2 text-sm text-gray-500">
-                  {episode.first_air_date && (
+                  {program.first_air_date && (
                     <div className="flex items-center">
                       <span className="font-medium">初回放送:</span>
-                      <span className="ml-2">{episode.first_air_date}</span>
+                      <span className="ml-2">{program.first_air_date}</span>
                     </div>
                   )}
-                  {episode.director && (
+                  {program.director && (
                     <div className="flex items-center">
                       <span className="font-medium">演出:</span>
-                      <span className="ml-2">{episode.director}</span>
+                      <span className="ml-2">{program.director}</span>
                     </div>
                   )}
-                  {episode.cast1 && (
+                  {program.cast1 && (
                     <div className="flex items-center">
                       <span className="font-medium">出演:</span>
-                      <span className="ml-2">{episode.cast1}</span>
+                      <span className="ml-2">{program.cast1}</span>
                     </div>
                   )}
                 </div>
 
-                {episode.notes && (
+                {program.notes && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <p className="text-sm text-gray-600 line-clamp-3">
-                      {episode.notes}
+                      {program.notes}
                     </p>
                   </div>
                 )}
 
                 <div className="mt-4 flex justify-between items-center">
                   <span className="text-xs text-gray-400">
-                    {episode.updated_at && new Date(episode.updated_at).toLocaleDateString('ja-JP')}
+                    {program.updated_at && new Date(program.updated_at).toLocaleDateString('ja-JP')}
                   </span>
                   <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
                     詳細を見る
