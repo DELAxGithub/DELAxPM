@@ -28,11 +28,11 @@ export default function DashboardPage() {
   }
 
   const plattoInProgress = plattoPrograms.filter(p => 
-    p.current_status && !['OA済', '請求済'].includes(p.current_status)
+    p.status && !['OA済', '請求済'].includes(p.status)
   ).length;
 
   const plattoCompleted = plattoPrograms.filter(p => 
-    p.current_status && ['OA済', '請求済'].includes(p.current_status)
+    p.status && ['OA済', '請求済'].includes(p.status)
   ).length;
 
   const liberaryInProgress = liberaryEpisodes.filter(e => 

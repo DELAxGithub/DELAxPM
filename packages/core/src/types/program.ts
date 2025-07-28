@@ -5,7 +5,7 @@ export interface Program {
   subtitle?: string;
   program_type?: 'single' | 'series' | 'season';
   season_number?: number;
-  current_status?: string;
+  status?: string;
   project_type: 'platto' | 'liberary' | 'unified';
   
   // 日程関連

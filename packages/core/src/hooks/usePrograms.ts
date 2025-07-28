@@ -60,7 +60,7 @@ export function usePrograms(
 
       // ステータスフィルター
       if (status) {
-        query = query.eq('current_status', status);
+        query = query.eq('status', status);
       }
 
       // ソート

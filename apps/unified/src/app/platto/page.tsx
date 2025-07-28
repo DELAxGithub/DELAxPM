@@ -94,9 +94,9 @@ export default function PlattoPage() {
                   <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
                     {program.title}
                   </h3>
-                  {program.current_status && (
+                  {program.status && (
                     <StatusBadge
-                      status={program.current_status}
+                      status={program.status}
                       type="program"
                       size="sm"
                     />
