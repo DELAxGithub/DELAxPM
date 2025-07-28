@@ -46,9 +46,16 @@ export function usePrograms(
         .from('programs')
         .select('*', { count: 'exact' });
 
-      // プロジェクトタイプフィルター
+      // プロジェクトタイプフィルター（notesフィールドのタグでフィルタ）
       if (projectType) {
-        query = query.eq('project_type', projectType);
+        if (projectType === 'platto') {
+          query = query.ilike('notes', '%[PLATTO]%');
+        } else if (projectType === 'liberary') {
+          query = query.ilike('notes', '%[LIBERARY]%');
+        } else if (projectType !== 'unified') {
+          // unified以外の不明なprojectTypeの場合は従来のproject_type列を試す
+          query = query.eq('project_type', projectType);
+        }
       }
 
       // ステータスフィルター
