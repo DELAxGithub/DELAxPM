@@ -53,10 +53,10 @@ export function useEpisodes(
           *,
           series!inner(
             id,
-            title as series_title,
+            title,
             programs!inner(
               id,
-              title as program_title,
+              title,
               project_type
             )
           )
@@ -116,10 +116,10 @@ export function useEpisodes(
           *,
           series!inner(
             id,
-            title as series_title,
+            title,
             programs!inner(
               id,
-              title as program_title,
+              title,
               project_type
             )
           )
@@ -150,10 +150,10 @@ export function useEpisodes(
           *,
           series!inner(
             id,
-            title as series_title,
+            title,
             programs!inner(
               id,
-              title as program_title,
+              title,
               project_type
             )
           )
