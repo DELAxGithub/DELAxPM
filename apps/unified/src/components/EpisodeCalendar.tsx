@@ -15,9 +15,11 @@ import {
   parse,
 } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import { ChevronLeft, ChevronRight, Calendar, User, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, User, X, Plus } from 'lucide-react';
 import { useEpisodes } from '@delaxpm/core';
+import { CalendarEvent, NewCalendarEvent } from '@delaxpm/core';
 import { supabase } from '../lib/supabase';
+import TaskModal from './TaskModal';
 
 interface EpisodeEventProps {
   episode: any;
@@ -86,11 +88,13 @@ function WeekView({
   startDate,
   episodes,
   onEventClick,
+  onAddEvent,
   projectType
 }: {
   startDate: Date;
   episodes: any[];
   onEventClick: (episode: any, type: 'due' | 'recording') => void;
+  onAddEvent: (date: Date) => void;
   projectType: 'platto' | 'liberary';
 }) {
   const weekDays = eachDayOfInterval({
@@ -123,7 +127,7 @@ function WeekView({
         return (
           <div
             key={dateStr}
-            className={`min-h-[120px] p-2 border-r border-gray-200 relative ${
+            className={`min-h-[120px] p-2 border-r border-gray-200 relative group ${
               !isSameMonth(date, startDate) ? 'bg-gray-50' : ''
             }`}
           >
@@ -147,6 +151,13 @@ function WeekView({
                   )}
                 </div>
               </div>
+              <button
+                onClick={() => onAddEvent(date)}
+                className="p-1 text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors rounded-full opacity-0 group-hover:opacity-100"
+                title="イベントを追加"
+              >
+                <Plus size={14} />
+              </button>
             </div>
 
             <div className="space-y-1">
@@ -176,6 +187,9 @@ export function EpisodeCalendar({ projectType }: EpisodeCalendarProps) {
     episode: any;
     type: 'due' | 'recording';
   } | null>(null);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
   
   const { episodes, loading, error } = useEpisodes(supabase, {
     projectType: projectType,
@@ -204,6 +218,28 @@ export function EpisodeCalendar({ projectType }: EpisodeCalendarProps) {
 
   const handleEventClick = (episode: any, type: 'due' | 'recording') => {
     setSelectedEvent({ episode, type });
+  };
+
+  const handleAddEvent = (date: Date) => {
+    setSelectedDate(date);
+    setIsTaskModalOpen(true);
+  };
+
+  const handleTaskSubmit = async (data: NewCalendarEvent) => {
+    try {
+      const { data: newEvent, error } = await supabase
+        .from('calendar_events')
+        .insert([data])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setCalendarEvents(prev => [...prev, newEvent]);
+    } catch (error) {
+      console.error('Error creating calendar event:', error);
+      throw error;
+    }
   };
 
   if (loading) {
@@ -275,6 +311,7 @@ export function EpisodeCalendar({ projectType }: EpisodeCalendarProps) {
               startDate={weekStart}
               episodes={episodes}
               onEventClick={handleEventClick}
+              onAddEvent={handleAddEvent}
               projectType={projectType}
             />
           ))}
@@ -355,6 +392,17 @@ export function EpisodeCalendar({ projectType }: EpisodeCalendarProps) {
           </div>
         </div>
       )}
+
+      {/* TaskModal */}
+      <TaskModal
+        isOpen={isTaskModalOpen}
+        onClose={() => {
+          setIsTaskModalOpen(false);
+          setSelectedDate(null);
+        }}
+        selectedDate={selectedDate || undefined}
+        onSubmit={handleTaskSubmit}
+      />
     </div>
   );
 }

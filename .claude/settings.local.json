@@ -49,7 +49,12 @@
       "Bash(turbo build:*)",
       "Bash(npx turbo build:*)",
       "Bash(npm run build:*)",
-      "Bash(netlify deploy:*)"
+      "Bash(netlify deploy:*)",
+      "Bash(npx supabase db remote dump:*)",
+      "Bash(npx supabase:*)",
+      "Bash(npx netlify deploy:*)",
+      "Bash(npx netlify:*)",
+      "Bash(tar:*)"
     ],
     "deny": []
   }

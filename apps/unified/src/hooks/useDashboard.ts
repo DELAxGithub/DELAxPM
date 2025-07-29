@@ -10,12 +10,15 @@ export function useDashboard() {
   const fetchWidgets = async () => {
     try {
       setLoading(true);
+      console.log('Fetching dashboard widgets...');
       const data = await getDashboardWidgets();
+      console.log('Dashboard widgets data:', data);
       setWidgets(data);
       setError(null);
     } catch (err) {
       console.error('Error fetching dashboard widgets:', err);
-      setError('ダッシュボードの読み込みに失敗しました');
+      console.error('Error details:', err);
+      setError('ダッシュボードの読み込みに失敗しました: ' + (err as Error).message);
     } finally {
       setLoading(false);
     }

@@ -27,21 +27,32 @@
 # リダイレクトルール
 [[redirects]]
   from = "/liberary-team"
-  to = "/team/liberary"
+  to = "/liberary"
   status = 301
 
 [[redirects]]
   from = "/platto-team"
-  to = "/team/platto"
+  to = "/platto"
   status = 301
 
 # チーム専用URL（短縮URL）
 [[redirects]]
   from = "/lib"
-  to = "/team/liberary"
+  to = "/liberary"
   status = 301
 
 [[redirects]]
   from = "/pla"
-  to = "/team/platto"
+  to = "/platto"
+  status = 301
+
+# 旧team URLからのリダイレクト
+[[redirects]]
+  from = "/team/liberary"
+  to = "/liberary"
+  status = 301
+
+[[redirects]]
+  from = "/team/platto"
+  to = "/platto"
   status = 301
