@@ -1,158 +1,174 @@
 'use client';
 
-import { usePrograms } from '@delaxpm/core';
+import React, { useState } from 'react';
+import { Menu, X, Calendar, Film, Layers, User, LogOut } from 'lucide-react';
+import { EpisodeListPage } from '../../components/EpisodeListPage';
+import EpisodeKanbanBoard from '../../components/EpisodeKanbanBoard';
+import { EpisodeCalendar } from '../../components/EpisodeCalendar';
+import { useEpisodes, useStatusMaster } from '@delaxpm/core';
 import { supabase } from '../../lib/supabase';
-import { LoadingSpinner, ErrorMessage, StatusBadge } from '@delaxpm/core';
-import Link from 'next/link';
+
+type TabType = 'episodes' | 'kanban' | 'calendar';
 
 export default function LiberaryPage() {
-  const { programs, loading, error, refetch } = usePrograms(supabase, {
+  const [activeTab, setActiveTab] = useState<TabType>('episodes');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const { episodes, loading, error } = useEpisodes(supabase, {
     projectType: 'liberary',
-    sortBy: 'updated_at',
-    sortOrder: 'desc'
+    sortBy: 'episode_number',
+    sortOrder: 'asc'
   });
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" text="リベラリーエピソードデータを読み込み中..." />
-      </div>
-    );
-  }
+  const { statuses: statusMaster } = useStatusMaster(supabase, {
+    projectType: 'liberary'
+  });
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <ErrorMessage 
-          message={error} 
-          onRetry={refetch}
-          className="max-w-md"
-        />
-      </div>
-    );
-  }
+  // スタイルカラー設定
+  const statusColors = statusMaster?.reduce((acc, status) => {
+    acc[status.status_key] = status.color_code || '#10b981';
+    return acc;
+  }, {} as Record<string, string>) || {};
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'episodes':
+        return <EpisodeListPage projectType="liberary" />;
+      case 'kanban':
+        return (
+          <EpisodeKanbanBoard
+            projectType="liberary"
+            statuses={statusMaster?.map(s => s.status_key) || []}
+            statusColors={statusColors}
+          />
+        );
+      case 'calendar':
+        return <EpisodeCalendar projectType="liberary" />;
+      default:
+        return <EpisodeListPage projectType="liberary" />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* オーバーレイ（モバイル時のみ表示） */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* サイドバー */}
+      <aside
+        className={`
+          fixed top-0 left-0 h-screen bg-white border-r border-gray-200 z-30
+          transition-transform duration-300 ease-in-out
+          w-64 flex flex-col
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        `}
+      >
+        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+          <h1 className="text-xl font-bold text-green-600">進捗すごろく</h1>
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="md:hidden text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
+        
+        <nav className="mt-6 flex flex-col gap-1 px-3">
+          <button
+            onClick={() => {
+              setActiveTab('calendar');
+              setIsSidebarOpen(false);
+            }}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-green-50 transition-colors ${
+              activeTab === 'calendar' ? 'bg-green-100 text-green-600 font-medium' : ''
+            }`}
+          >
+            <Calendar size={20} />
+            <span>カレンダー</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('episodes');
+              setIsSidebarOpen(false);
+            }}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-green-50 transition-colors ${
+              activeTab === 'episodes' ? 'bg-green-100 text-green-600 font-medium' : ''
+            }`}
+          >
+            <Film size={20} />
+            <span>エピソード一覧</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('kanban');
+              setIsSidebarOpen(false);
+            }}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-green-50 transition-colors ${
+              activeTab === 'kanban' ? 'bg-green-100 text-green-600 font-medium' : ''
+            }`}
+          >
+            <Layers size={20} />
+            <span>進捗すごろく</span>
+          </button>
+        </nav>
+
+        {/* ダッシュボード情報 */}
+        <div className="flex-1 p-4 mt-6">
+          <div className="bg-green-50 rounded-lg p-4">
+            <h3 className="text-sm font-medium text-green-800 mb-2">
+              エピソード統計
+            </h3>
+            <div className="space-y-2 text-sm text-green-700">
+              <div className="flex justify-between">
+                <span>総エピソード数:</span>
+                <span className="font-medium">{episodes.length}</span>
+              </div>
+              {loading && (
+                <div className="text-xs text-green-600">
+                  読み込み中...
+                </div>
+              )}
+              {error && (
+                <div className="text-xs text-red-600">
+                  エラー: {error}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </aside>
+
       {/* ヘッダー */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <Link href="/" className="text-gray-500 hover:text-gray-700 mr-4">
-                ← ホーム
-              </Link>
-              <h1 className="text-3xl font-bold text-gray-900">
-                リベラリー
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-500">
-                {programs.length} 番組
-              </span>
-              <button
-                onClick={refetch}
-                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
-              >
-                更新
-              </button>
-            </div>
+      <header className="h-16 bg-green-600 border-b border-green-700 flex items-center justify-between px-4 md:px-6 fixed top-0 right-0 left-0 md:left-64 z-10">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="md:hidden text-white/80 hover:text-white transition-colors"
+          >
+            <Menu size={24} />
+          </button>
+          <h1 className="text-lg md:text-xl font-semibold text-white">
+            リベラリー進捗すごろく
+          </h1>
+        </div>
+        <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-2 text-white/80">
+            <User size={20} />
+            <span className="hidden md:inline">ゲストユーザー</span>
           </div>
         </div>
       </header>
 
       {/* メインコンテンツ */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {programs.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="icon-container w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="48" height="48">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              番組がありません
-            </h3>
-            <p className="text-gray-500 mb-6">
-              リベラリーの番組データが見つかりません。
-            </p>
-            <button 
-              onClick={refetch}
-              className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
-            >
-              再読み込み
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {/* 番組リスト */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {programs.map((program) => (
-                <div
-                  key={program.id}
-                  className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-6"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
-                      {program.title}
-                    </h3>
-                    {program.status && (
-                      <StatusBadge
-                        status={program.status}
-                        type="program"
-                        size="sm"
-                      />
-                    )}
-                  </div>
-                  
-                  {program.subtitle && (
-                    <p className="text-sm text-gray-600 mb-3">
-                      {program.subtitle}
-                    </p>
-                  )}
-
-                  <div className="space-y-2 text-sm text-gray-500">
-                    {program.first_air_date && (
-                      <div className="flex items-center">
-                        <span className="font-medium">初回放送:</span>
-                        <span className="ml-2">{program.first_air_date}</span>
-                      </div>
-                    )}
-                    {program.director && (
-                      <div className="flex items-center">
-                        <span className="font-medium">演出:</span>
-                        <span className="ml-2">{program.director}</span>
-                      </div>
-                    )}
-                    {program.cast1 && (
-                      <div className="flex items-center">
-                        <span className="font-medium">出演:</span>
-                        <span className="ml-2">{program.cast1}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {program.notes && (
-                    <div className="mt-4 pt-4 border-t border-gray-200">
-                      <p className="text-sm text-gray-600 line-clamp-3">
-                        {program.notes}
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="mt-4 flex justify-between items-center">
-                    <span className="text-xs text-gray-400">
-                      {program.updated_at && new Date(program.updated_at).toLocaleDateString('ja-JP')}
-                    </span>
-                    <button className="text-green-600 hover:text-green-700 text-sm font-medium">
-                      詳細を見る
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+      <main className="md:ml-64 pt-16">
+        <div className="p-4 md:p-6">
+          {renderContent()}
+        </div>
       </main>
     </div>
   );

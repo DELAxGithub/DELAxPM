@@ -47,7 +47,9 @@
       "Bash(grep:*)",
       "Bash(psql:*)",
       "Bash(turbo build:*)",
-      "Bash(npx turbo build:*)"
+      "Bash(npx turbo build:*)",
+      "Bash(npm run build:*)",
+      "Bash(netlify deploy:*)"
     ],
     "deny": []
   }

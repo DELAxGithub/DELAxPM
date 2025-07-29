@@ -7,7 +7,7 @@ import { LoadingSpinner, ErrorMessage } from '@delaxpm/core';
 import Link from 'next/link';
 import { EpisodeListPage } from '../../../components/EpisodeListPage';
 import EpisodeKanbanBoard from '../../../components/EpisodeKanbanBoard';
-import EpisodeCalendar from '../../../components/EpisodeCalendar';
+import { EpisodeCalendar } from '../../../components/EpisodeCalendar';
 
 type TabType = 'list' | 'kanban' | 'calendar';
 

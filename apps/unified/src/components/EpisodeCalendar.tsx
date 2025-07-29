@@ -12,27 +12,26 @@ import {
   endOfMonth,
   isSameMonth,
   addWeeks,
+  parse,
 } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import { ChevronLeft, ChevronRight, Calendar, User } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, User, X } from 'lucide-react';
 import { useEpisodes } from '@delaxpm/core';
 import { supabase } from '../lib/supabase';
 
 interface EpisodeEventProps {
   episode: any;
-  type: 'air' | 'filming' | 'recording';
+  type: 'due' | 'recording';
   onClick: () => void;
 }
 
 function EpisodeEvent({ episode, type, onClick }: EpisodeEventProps) {
   const getEventColor = () => {
     switch (type) {
-      case 'air':
+      case 'due':
         return { bg: 'bg-red-50', text: 'text-red-900', border: 'border-red-200' };
-      case 'filming':
-        return { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' };
       case 'recording':
-        return { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' };
+        return { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' };
       default:
         return { bg: 'bg-gray-50', text: 'text-gray-900', border: 'border-gray-200' };
     }
@@ -40,12 +39,10 @@ function EpisodeEvent({ episode, type, onClick }: EpisodeEventProps) {
 
   const getEventIcon = () => {
     switch (type) {
-      case 'air':
-        return '📢';
-      case 'filming':
-        return '🎬';
+      case 'due':
+        return '📅';
       case 'recording':
-        return '🎙️';
+        return episode.metadata?.episode_type === 'interview' ? '🎙️' : '📹';
       default:
         return '📅';
     }
@@ -53,10 +50,8 @@ function EpisodeEvent({ episode, type, onClick }: EpisodeEventProps) {
 
   const getEventLabel = () => {
     switch (type) {
-      case 'air':
-        return '放送';
-      case 'filming':
-        return '撮影';
+      case 'due':
+        return '納期';
       case 'recording':
         return '収録';
       default:
@@ -74,7 +69,7 @@ function EpisodeEvent({ episode, type, onClick }: EpisodeEventProps) {
       <div className="flex items-start gap-1">
         <span className="flex-shrink-0">{getEventIcon()}</span>
         <div className="min-w-0 flex-1">
-          <div className="font-medium">#{episode.episode_number}</div>
+          <div className="font-medium">{episode.id}</div>
           <div className="text-[10px] leading-tight break-words">
             {episode.title}
           </div>
@@ -95,7 +90,7 @@ function WeekView({
 }: {
   startDate: Date;
   episodes: any[];
-  onEventClick: (episode: any, type: string) => void;
+  onEventClick: (episode: any, type: 'due' | 'recording') => void;
   projectType: 'platto' | 'liberary';
 }) {
   const weekDays = eachDayOfInterval({
@@ -110,17 +105,15 @@ function WeekView({
         const isFirstOfMonth = date.getDate() === 1;
         
         const dayEvents = episodes.flatMap(episode => {
-          const events: { episode: any; type: 'air' | 'filming' | 'recording' }[] = [];
+          const events: { episode: any; type: 'due' | 'recording' }[] = [];
           
-          if (episode.air_date && isSameDay(new Date(episode.air_date), date)) {
-            events.push({ episode, type: 'air' });
+          // リベラリーの場合は納期を表示
+          if (episode.metadata?.due_date && isSameDay(parse(episode.metadata.due_date, 'yyyy-MM-dd', new Date()), date)) {
+            events.push({ episode, type: 'due' });
           }
-          // プラットの場合は撮影日を表示
-          if (projectType === 'platto' && episode.filming_date && isSameDay(new Date(episode.filming_date), date)) {
-            events.push({ episode, type: 'filming' });
-          }
-          // リベラリーの場合は収録日を表示
-          if (projectType === 'liberary' && episode.recording_date && isSameDay(new Date(episode.recording_date), date)) {
+          // 収録日を表示（インタビューエピソードのみ）
+          if (episode.metadata?.episode_type === 'interview' && episode.recording_date && 
+              isSameDay(parse(episode.recording_date, 'yyyy-MM-dd', new Date()), date)) {
             events.push({ episode, type: 'recording' });
           }
           
@@ -177,11 +170,11 @@ interface EpisodeCalendarProps {
   projectType: 'platto' | 'liberary';
 }
 
-export default function EpisodeCalendar({ projectType }: EpisodeCalendarProps) {
+export function EpisodeCalendar({ projectType }: EpisodeCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<{
     episode: any;
-    type: string;
+    type: 'due' | 'recording';
   } | null>(null);
   
   const { episodes, loading, error } = useEpisodes(supabase, {
@@ -209,7 +202,7 @@ export default function EpisodeCalendar({ projectType }: EpisodeCalendarProps) {
   const handlePreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));
   const handleNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
 
-  const handleEventClick = (episode: any, type: string) => {
+  const handleEventClick = (episode: any, type: 'due' | 'recording') => {
     setSelectedEvent({ episode, type });
   };
 
@@ -236,22 +229,22 @@ export default function EpisodeCalendar({ projectType }: EpisodeCalendarProps) {
       <div className="sticky top-0 bg-white z-20 pb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h2 className="text-2xl font-semibold text-gray-900">
-              {projectLabel}カレンダー
+            <h2 className="text-2xl font-semibold text-green-800">
+              エピソードカレンダー
             </h2>
             <div className="flex items-center gap-2">
               <button
                 onClick={handlePreviousMonth}
-                className="p-1 hover:bg-gray-100 rounded transition-colors"
+                className="p-1 hover:bg-green-100 rounded transition-colors"
               >
                 <ChevronLeft size={20} />
               </button>
-              <span className="text-lg font-medium">
+              <span className="text-lg font-medium text-green-700">
                 {format(currentDate, 'yyyy年 M月', { locale: ja })}
               </span>
               <button
                 onClick={handleNextMonth}
-                className="p-1 hover:bg-gray-100 rounded transition-colors"
+                className="p-1 hover:bg-green-100 rounded transition-colors"
               >
                 <ChevronRight size={20} />
               </button>
@@ -309,41 +302,44 @@ export default function EpisodeCalendar({ projectType }: EpisodeCalendarProps) {
             <div className="p-4 space-y-4">
               <div>
                 <div className="text-sm text-gray-600 font-medium">
-                  #{selectedEvent.episode.episode_number}
+                  {selectedEvent.episode.id}
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mt-1">
                   {selectedEvent.episode.title}
                 </h3>
               </div>
 
-              {selectedEvent.episode.cast1 && (
-                <div>
-                  <div className="text-sm font-medium text-gray-900 mb-1">
-                    出演者
-                  </div>
-                  <div className="flex items-center gap-1 text-gray-600">
-                    <User className="w-4 h-4" />
-                    {selectedEvent.episode.cast1}
-                    {selectedEvent.episode.cast2 && `, ${selectedEvent.episode.cast2}`}
-                  </div>
+              <div>
+                <div className="text-sm font-medium text-gray-900 mb-1">
+                  {selectedEvent.type === 'due' ? '納期' : '収録日'}
                 </div>
-              )}
+                <div className="text-gray-600">
+                  {selectedEvent.type === 'due' 
+                    ? selectedEvent.episode.metadata?.due_date || '未設定' 
+                    : selectedEvent.episode.recording_date || '未設定'
+                  }
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm font-medium text-gray-900 mb-1">
+                  タイプ
+                </div>
+                <div className="text-gray-600">
+                  {selectedEvent.episode.metadata?.episode_type === 'interview' ? 'インタビュー' : 
+                   selectedEvent.episode.metadata?.episode_type === 'vtr' ? 'VTR' : 'レギュラー'}
+                </div>
+              </div>
 
               {selectedEvent.episode.director && (
                 <div>
                   <div className="text-sm font-medium text-gray-900 mb-1">
                     担当者
                   </div>
-                  <div className="text-gray-600">{selectedEvent.episode.director}</div>
-                </div>
-              )}
-
-              {selectedEvent.episode.notes && (
-                <div>
-                  <div className="text-sm font-medium text-gray-900 mb-1">
-                    備考
+                  <div className="flex items-center gap-1 text-gray-600">
+                    <User className="w-4 h-4" />
+                    {selectedEvent.episode.director}
                   </div>
-                  <div className="text-gray-600">{selectedEvent.episode.notes}</div>
                 </div>
               )}
             </div>
