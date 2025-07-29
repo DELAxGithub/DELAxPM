@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@delaxpm/core": "workspace:*",
-    "@hello-pangea/dnd": "^16.5.0",
+    "@hello-pangea/dnd": "^16.6.0",
     "@supabase/supabase-js": "^2.39.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.0",
