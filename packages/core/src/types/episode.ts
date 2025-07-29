@@ -7,7 +7,7 @@ export interface Episode {
   episode_number?: number;
   season?: number;
   status?: string;
-  project_type: 'platto' | 'liberary' | 'unified';
+  project_type?: 'platto' | 'liberary' | 'unified';
   
   // 日程関連
   first_air_date?: string;
@@ -48,6 +48,14 @@ export interface Episode {
   source_system?: string;
   migrated_at?: string;
   legacy_id?: string;
+  
+  // プロジェクト固有データ（JSONB）
+  metadata?: {
+    episode_type?: 'interview' | 'vtr' | 'regular';
+    due_date?: string;
+    season?: number;
+    [key: string]: any;
+  };
   
   // システム管理
   assigned_users?: string[];

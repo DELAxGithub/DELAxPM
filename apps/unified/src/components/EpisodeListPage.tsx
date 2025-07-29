@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Plus, Filter, Calendar, User, ArrowUpDown } from 'lucide-react';
-import { useEpisodes } from '@delaxpm/core';
+import { useEpisodes, useStatusMaster } from '@delaxpm/core';
 import { StatusBadge } from '@delaxpm/core';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
@@ -20,11 +20,16 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
     sortOrder: 'asc'
   });
   
+  const { statuses: statusMaster } = useStatusMaster(supabase, {
+    projectType: projectType
+  });
+  
   const [sortField, setSortField] = useState<SortField>('episode_number');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [showFilters, setShowFilters] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [directorFilter, setDirectorFilter] = useState<string>('');
+  const [episodeTypeFilter, setEpisodeTypeFilter] = useState<string>('');
 
   // ソート処理
   const sortedEpisodes = useMemo(() => {
@@ -49,9 +54,11 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
     return sortedEpisodes.filter(episode => {
       if (statusFilter && episode.status !== statusFilter) return false;
       if (directorFilter && !episode.director?.toLowerCase().includes(directorFilter.toLowerCase())) return false;
+      // エピソードタイプフィルター（metadata.episode_typeを想定）
+      if (episodeTypeFilter && episode.metadata?.episode_type !== episodeTypeFilter) return false;
       return true;
     });
-  }, [sortedEpisodes, statusFilter, directorFilter]);
+  }, [sortedEpisodes, statusFilter, directorFilter, episodeTypeFilter]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -86,13 +93,13 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">エピソード管理</h1>
-          <p className="text-gray-600 mt-1">{projectLabel}チーム専用 - エピソード制作進捗</p>
+          <p className="text-gray-600 mt-1">{projectType === 'liberary' ? 'LIBRARY番組のエピソード制作進捗' : 'プラット進捗すごろく'}</p>
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 ${
-              (statusFilter || directorFilter) 
+              (statusFilter || directorFilter || episodeTypeFilter) 
                 ? projectType === 'platto' 
                   ? 'border-blue-500 text-blue-600' 
                   : 'border-green-500 text-green-600'
@@ -111,7 +118,7 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
             }`}
           >
             <Plus className="w-4 h-4" />
-            更新
+            {projectType === 'liberary' ? '新規エピソード' : '更新'}
           </button>
         </div>
       </div>
@@ -119,26 +126,47 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
       {/* フィルター */}
       {showFilters && (
         <div className="p-4 bg-gray-50 rounded-lg space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <select
+              value={episodeTypeFilter}
+              onChange={(e) => setEpisodeTypeFilter(e.target.value)}
+              className={`px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 ${
+                projectType === 'platto' ? 'focus:ring-blue-500' : 'focus:ring-green-500'
+              }`}
+            >
+              <option value="">全タイプ</option>
+              <option value="interview">インタビュー</option>
+              <option value="vtr">VTR</option>
+              <option value="regular">レギュラー</option>
+            </select>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className={`px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 ${
+                projectType === 'platto' ? 'focus:ring-blue-500' : 'focus:ring-green-500'
+              }`}
             >
               <option value="">全ステータス</option>
-              {/* ここに動的にステータス一覧を入れる（後で実装） */}
+              {statusMaster?.map(status => (
+                <option key={status.status_key} value={status.status_key}>
+                  {status.status_name}
+                </option>
+              ))}
             </select>
             <input
               type="text"
               placeholder="担当者で検索"
               value={directorFilter}
               onChange={(e) => setDirectorFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className={`px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 ${
+                projectType === 'platto' ? 'focus:ring-blue-500' : 'focus:ring-green-500'
+              }`}
             />
             <button
               onClick={() => {
                 setStatusFilter('');
                 setDirectorFilter('');
+                setEpisodeTypeFilter('');
               }}
               className="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50"
             >
@@ -159,7 +187,7 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 >
                   <div className="flex items-center gap-1">
-                    エピソード番号
+                    {projectType === 'liberary' ? 'エピソードID' : 'エピソード番号'}
                     <ArrowUpDown className="w-3 h-3" />
                   </div>
                 </th>
@@ -172,6 +200,11 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
                     <ArrowUpDown className="w-3 h-3" />
                   </div>
                 </th>
+                {projectType === 'liberary' && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    タイプ
+                  </th>
+                )}
                 <th 
                   onClick={() => handleSort('status')}
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
@@ -182,11 +215,13 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
                   </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  放送日
+                  {projectType === 'liberary' ? '納期' : '放送日'}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  キャスト
-                </th>
+                {projectType === 'platto' && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    キャスト
+                  </th>
+                )}
                 <th 
                   onClick={() => handleSort('director')}
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
@@ -205,11 +240,18 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
               {filteredEpisodes.map((episode) => (
                 <tr key={episode.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    #{episode.episode_number}
+                    {projectType === 'liberary' ? episode.id : `#${episode.episode_number}`}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {episode.title}
                   </td>
+                  {projectType === 'liberary' && (
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {episode.metadata?.episode_type === 'interview' ? 'インタビュー' : 
+                       episode.metadata?.episode_type === 'vtr' ? 'VTR' : 
+                       episode.metadata?.episode_type || 'レギュラー'}
+                    </td>
+                  )}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <StatusBadge
                       status={episode.status || ''}
@@ -218,18 +260,23 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {episode.first_air_date ? (
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {format(new Date(episode.first_air_date), 'yyyy/MM/dd', { locale: ja })}
-                      </div>
-                    ) : (
-                      '-'
-                    )}
+                    {(() => {
+                      const dateValue = projectType === 'liberary' ? episode.metadata?.due_date : episode.first_air_date;
+                      return dateValue ? (
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {format(new Date(dateValue), 'yyyy/MM/dd', { locale: ja })}
+                        </div>
+                      ) : (
+                        '-'
+                      );
+                    })()}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {[episode.cast1, episode.cast2].filter(Boolean).join('、') || '-'}
-                  </td>
+                  {projectType === 'platto' && (
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {[episode.cast1, episode.cast2].filter(Boolean).join('、') || '-'}
+                    </td>
+                  )}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {episode.director ? (
                       <div className="flex items-center gap-1">
@@ -247,7 +294,7 @@ export function EpisodeListPage({ projectType }: EpisodeListPageProps) {
                         : 'text-green-600 hover:text-green-800'
                       }
                     >
-                      詳細
+                      {projectType === 'liberary' ? '編集' : '詳細'}
                     </button>
                   </td>
                 </tr>

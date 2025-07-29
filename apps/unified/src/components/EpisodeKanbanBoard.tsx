@@ -12,9 +12,14 @@ interface EpisodeCardProps {
   onClick: () => void;
 }
 
-function EpisodeCard({ episode, index, onClick }: EpisodeCardProps) {
+interface EpisodeCardPropsExtended extends EpisodeCardProps {
+  projectType: 'platto' | 'liberary';
+}
+
+function EpisodeCard({ episode, index, onClick, projectType }: EpisodeCardPropsExtended) {
   const today = new Date().toISOString().split('T')[0];
-  const isOverdue = episode.air_date && episode.air_date < today && !episode.status?.includes('完');
+  const dueDate = projectType === 'liberary' ? episode.metadata?.due_date : episode.first_air_date;
+  const isOverdue = dueDate && dueDate < today && !episode.status?.includes('完');
   
   return (
     <Draggable draggableId={episode.id.toString()} index={index}>
@@ -32,7 +37,7 @@ function EpisodeCard({ episode, index, onClick }: EpisodeCardProps) {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <div className="text-xs text-gray-600 font-medium truncate">
-                  #{episode.episode_number}
+                  {projectType === 'liberary' ? episode.id : `#${episode.episode_number}`}
                 </div>
                 {isOverdue && (
                   <AlertTriangle size={12} className="text-red-500 flex-shrink-0" />
@@ -44,7 +49,16 @@ function EpisodeCard({ episode, index, onClick }: EpisodeCardProps) {
               
               {/* エピソード固有の情報 */}
               <div className="flex flex-col gap-1 mt-2 text-xs text-gray-600">
-                {episode.cast1 && (
+                {projectType === 'liberary' && episode.metadata?.episode_type && (
+                  <div className="flex items-center gap-1">
+                    <span>🎬</span>
+                    <span className="truncate">
+                      {episode.metadata.episode_type === 'interview' ? 'インタビュー' : 
+                       episode.metadata.episode_type === 'vtr' ? 'VTR' : 'レギュラー'}
+                    </span>
+                  </div>
+                )}
+                {projectType === 'platto' && episode.cast1 && (
                   <div className="flex items-center gap-1">
                     <User size={10} />
                     <span className="truncate">{episode.cast1}</span>
@@ -52,20 +66,20 @@ function EpisodeCard({ episode, index, onClick }: EpisodeCardProps) {
                 )}
                 {episode.director && (
                   <div className="flex items-center gap-1">
-                    <span>🎬</span>
+                    <span>👤</span>
                     <span className="truncate">{episode.director}</span>
                   </div>
                 )}
-                {episode.air_date && (
+                {dueDate && (
                   <div className={`flex items-center gap-1 ${isOverdue ? 'text-red-600 font-medium' : ''}`}>
                     <Calendar size={10} />
                     <span>
-                      {format(new Date(episode.air_date), 'M/d', { locale: ja })}
+                      {format(new Date(dueDate), 'M/d', { locale: ja })}
                       {isOverdue && ' (期限切れ)'}
                     </span>
                   </div>
                 )}
-                {episode.location && (
+                {projectType === 'platto' && episode.location && (
                   <div className="flex items-center gap-1">
                     <span>📍</span>
                     <span className="truncate">{episode.location}</span>
@@ -75,7 +89,9 @@ function EpisodeCard({ episode, index, onClick }: EpisodeCardProps) {
             </div>
             <div className="flex items-center gap-1">
               <button 
-                className="text-gray-400 hover:text-blue-600 transition-colors"
+                className={`text-gray-400 transition-colors ${
+                  projectType === 'platto' ? 'hover:text-blue-600' : 'hover:text-green-600'
+                }`}
                 onClick={(e) => {
                   e.stopPropagation();
                   onClick();
@@ -344,6 +360,7 @@ export default function EpisodeKanbanBoard({ projectType, statuses, statusColors
                           episode={episode}
                           index={index}
                           onClick={() => handleCardClick(episode)}
+                          projectType={projectType}
                         />
                       ))}
                       {provided.placeholder}
