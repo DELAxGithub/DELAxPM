@@ -5,6 +5,7 @@ import { Menu, X, Calendar, Film, Layers, User, LogOut } from 'lucide-react';
 import { EpisodeListPage } from '../../components/EpisodeListPage';
 import EpisodeKanbanBoard from '../../components/EpisodeKanbanBoard';
 import { EpisodeCalendar } from '../../components/EpisodeCalendar';
+import TeamDashboard from '../../components/dashboard/TeamDashboard';
 import { useEpisodes, useStatusMaster } from '@delaxpm/core';
 import { supabase } from '../../lib/supabase';
 
@@ -117,9 +118,9 @@ export default function LiberaryPage() {
           </button>
         </nav>
 
-        {/* ダッシュボード情報 */}
-        <div className="flex-1 p-4 mt-6">
-          <div className="bg-green-50 rounded-lg p-4">
+        {/* エピソード統計 */}
+        <div className="px-3 mt-6">
+          <div className="bg-green-50 rounded-lg p-3">
             <h3 className="text-sm font-medium text-green-800 mb-2">
               エピソード統計
             </h3>
@@ -141,6 +142,9 @@ export default function LiberaryPage() {
             </div>
           </div>
         </div>
+
+        {/* チームダッシュボード */}
+        <TeamDashboard />
       </aside>
 
       {/* ヘッダー */}

@@ -1,35 +1,37 @@
 export interface DashboardWidget {
   id: string;
-  type: 'tasks' | 'schedule' | 'memo' | 'quicklinks' | 'stats';
+  widget_type: 'quicklinks' | 'memo' | 'tasks' | 'schedule';
   title: string;
-  position: { x: number; y: number };
-  size: { width: number; height: number };
-  config?: Record<string, any>;
-  visible: boolean;
-}
-
-export interface DashboardStats {
-  total_programs: number;
-  programs_in_progress: number;
-  programs_completed: number;
-  upcoming_deadlines: number;
-  overdue_tasks: number;
+  content: any;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface QuickLink {
-  id: string;
-  title: string;
   url: string;
-  icon?: string;
-  category?: string;
+  label: string;
 }
 
-export interface DashboardMemo {
-  id: number;
-  title: string;
-  content: string;
-  priority: 'low' | 'medium' | 'high';
-  created_by: string;
-  created_at: string;
-  updated_at?: string;
+export interface QuickLinksContent {
+  links: QuickLink[];
+}
+
+export interface MemoContent {
+  text: string;
+}
+
+export interface Task {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
+export interface TasksContent {
+  tasks: Task[];
+}
+
+export interface ScheduleContent {
+  // スケジュール概要は calendar_tasks から自動取得するため空
 }
