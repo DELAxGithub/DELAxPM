@@ -236,7 +236,7 @@ class SupabaseAutoMigrate {
         },
         {
           name: 'Functions',
-          query: 'SELECT COUNT(*) FROM information_schema.routines WHERE routine_schema = \\'public\\''
+          query: 'SELECT COUNT(*) FROM information_schema.routines WHERE routine_schema = \'public\''
         }
       ];
 

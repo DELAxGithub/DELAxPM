@@ -51,26 +51,30 @@ export function useEpisodes(
         .from('episodes')
         .select(`
           *,
-          programs!inner(
+          series!inner(
             id,
-            title as program_title,
-            project_type as program_project_type
+            title as series_title,
+            programs!inner(
+              id,
+              title as program_title,
+              project_type
+            )
           )
         `, { count: 'exact' });
 
-      // プログラムIDフィルター
+      // プログラムIDフィルター（seriesテーブル経由）
       if (programId) {
-        query = query.eq('program_id', programId);
+        query = query.eq('series.program_id', programId);
       }
 
-      // プロジェクトタイプフィルター（programsテーブル経由）
+      // プロジェクトタイプフィルター（series.programsテーブル経由）
       if (projectType) {
-        query = query.eq('programs.project_type', projectType);
+        query = query.eq('series.programs.project_type', projectType);
       }
 
       // ステータスフィルター
       if (status) {
-        query = query.eq('current_status', status);
+        query = query.eq('status', status);
       }
 
       // エピソードタイプフィルター
@@ -110,10 +114,14 @@ export function useEpisodes(
         .insert([episode])
         .select(`
           *,
-          programs!inner(
+          series!inner(
             id,
-            title as program_title,
-            project_type as program_project_type
+            title as series_title,
+            programs!inner(
+              id,
+              title as program_title,
+              project_type
+            )
           )
         `)
         .single();
@@ -140,10 +148,14 @@ export function useEpisodes(
         .eq('id', id)
         .select(`
           *,
-          programs!inner(
+          series!inner(
             id,
-            title as program_title,
-            project_type as program_project_type
+            title as series_title,
+            programs!inner(
+              id,
+              title as program_title,
+              project_type
+            )
           )
         `)
         .single();

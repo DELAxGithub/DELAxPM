@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Episode } from '../types/episode';
 
-export interface UseEpisodesOptions {
+export interface UseProgramsOptions {
   projectType?: 'platto' | 'liberary' | 'unified';
   status?: string;
   limit?: number;
@@ -9,7 +9,7 @@ export interface UseEpisodesOptions {
   sortOrder?: 'asc' | 'desc';
 }
 
-export interface UseEpisodesReturn {
+export interface UseProgramsReturn {
   episodes: Episode[];
   loading: boolean;
   error: string | null;
@@ -20,25 +20,10 @@ export interface UseEpisodesReturn {
   deleteEpisode: (id: number) => Promise<boolean>;
 }
 
-// Backward compatibility aliases (deprecated)
-/** @deprecated Use UseEpisodesOptions instead */
-export type UseProgramsOptions = UseEpisodesOptions;
-/** @deprecated Use UseEpisodesReturn instead - note: programs property is now episodes */
-export interface UseProgramsReturn {
-  programs: Episode[];
-  loading: boolean;
-  error: string | null;
-  totalCount: number;
-  refetch: () => Promise<void>;
-  createProgram: (program: Partial<Episode>) => Promise<Episode | null>;
-  updateProgram: (id: number, updates: Partial<Episode>) => Promise<Episode | null>;
-  deleteProgram: (id: number) => Promise<boolean>;
-}
-
 export function useEpisodes(
   supabase: any,
-  options: UseEpisodesOptions = {}
-): UseEpisodesReturn {
+  options: UseProgramsOptions = {}
+): UseProgramsReturn {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -187,7 +172,7 @@ export function useEpisodes(
 export function usePrograms(
   supabase: any,
   options: UseProgramsOptions = {}
-): UseProgramsReturn {
+) {
   const result = useEpisodes(supabase, options);
   return {
     programs: result.episodes,

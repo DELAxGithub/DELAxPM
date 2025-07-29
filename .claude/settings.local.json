@@ -45,7 +45,9 @@
       "Bash(pnpm:*)",
       "Bash(timeout 10 pnpm dev)",
       "Bash(grep:*)",
-      "Bash(psql:*)"
+      "Bash(psql:*)",
+      "Bash(turbo build:*)",
+      "Bash(npx turbo build:*)"
     ],
     "deny": []
   }
