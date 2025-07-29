@@ -5,6 +5,7 @@ import MemoWidget from './MemoWidget';
 import QuickLinksWidget from './QuickLinksWidget';
 import TasksWidget from './TasksWidget';
 import ScheduleWidget from './ScheduleWidget';
+import MembersWidget from './MembersWidget';
 
 export default function TeamDashboard() {
   const { widgets, loading, error, updateWidget } = useDashboard();
@@ -58,6 +59,13 @@ export default function TeamDashboard() {
         );
       case 'schedule':
         return <ScheduleWidget />;
+      case 'members':
+        return (
+          <MembersWidget 
+            content={widget.content} 
+            onUpdate={(content) => updateWidget(widget.id, { content })}
+          />
+        );
       default:
         return null;
     }
